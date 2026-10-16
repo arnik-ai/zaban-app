@@ -11,49 +11,30 @@
 <body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,800&family=Vazirmatn:wght@400;600;800;900&display=swap">
 <style>
-/* Layout: one small, airy column; four big pastel tiles; everything else lives in sheets. */
+/* Layout: one small, airy column; four big pastel tiles; everything else lives in sheets.
+   Deliberately one light, pastel look: it stays light even when Telegram is in dark mode. */
 :root {
-  --bg1: #E6F7EF; --bg2: #EEE8FF; --bg3: #FFEFE4;
-  --glass: rgba(255, 255, 255, 0.74); --glass-line: rgba(255, 255, 255, 0.95);
-  --ink: #1E2233; --ink2: #6C7088;
-  --mint: #A9EBCD; --mint-d: #0F7F57;
-  --lilac: #D3C6FF; --lilac-d: #5841C4;
-  --peach: #FFD2BC; --peach-d: #B9512B;
-  --sky: #BCDCFF; --sky-d: #2A6BBE;
-  --brand: #16A06B; --brand-ink: #FFFFFF;
-  --err: #D0453A;
-  --shadow: 0 10px 30px rgba(68, 60, 120, 0.12);
+  color-scheme: light;
+  --bg1: #FFFFFF; --bg2: #FFFFFF; --bg3: #FFFFFF; --bg4: #FFFFFF;
+  --glass: #FFFFFF; --glass-line: #E9E4F7;
+  --ink: #2A2D43; --ink2: #7B7F97;
+  --mint-a: #EAFBF7; --mint-b: #D2F4EC; --mint-d: #17806F; --mint-line: #ABE7DA;
+  --lilac-a: #F4F0FF; --lilac-b: #E4DBFF; --lilac-d: #6A4FD0; --lilac-line: #CFC0FF;
+  --peach-a: #FFF0F6; --peach-b: #FFDCEA; --peach-d: #C2477C; --peach-line: #FFBCD6;
+  --sky-a: #FFF9E3; --sky-b: #FFEFBF; --sky-d: #8F6200; --sky-line: #FFDC85;
+  --mint: var(--mint-b); --lilac: var(--lilac-b); --peach: var(--peach-b); --sky: var(--sky-b);
+  --brand: #7C5CF0; --brand-2: #B06EEA;
+  --err: #D44A3F;
+  --shadow: 0 6px 18px rgba(106, 79, 208, 0.08);
   --font: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg1: #0E1B1C; --bg2: #171430; --bg3: #23170F;
-    --glass: rgba(34, 37, 54, 0.72); --glass-line: rgba(255, 255, 255, 0.08);
-    --ink: #F3F4FA; --ink2: #A2A6BE;
-    --mint: #1F5A44; --mint-d: #8FE9C2; --lilac: #3A2F73; --lilac-d: #CDBFFF;
-    --peach: #5C3020; --peach-d: #FFC2A6; --sky: #1E3A5E; --sky-d: #A9D0FF;
-    --brand: #2FBF85; --err: #FF7A6B; --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg1: #0E1B1C; --bg2: #171430; --bg3: #23170F;
-  --glass: rgba(34, 37, 54, 0.72); --glass-line: rgba(255, 255, 255, 0.08);
-  --ink: #F3F4FA; --ink2: #A2A6BE;
-  --mint: #1F5A44; --mint-d: #8FE9C2; --lilac: #3A2F73; --lilac-d: #CDBFFF;
-  --peach: #5C3020; --peach-d: #FFC2A6; --sky: #1E3A5E; --sky-d: #A9D0FF;
-  --brand: #2FBF85; --err: #FF7A6B; --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  color-scheme: dark;
 }
 * { box-sizing: border-box; }
 html, body { min-height: 100%; }
 body {
-  margin: 0; color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.6; direction: rtl;
+  margin: 0; color: var(--ink); font-family: var(--font); font-size: 16px; line-height: 1.65; direction: rtl;
   background: var(--bg1);
-  background-image: radial-gradient(60% 40% at 90% 0%, var(--bg2) 0%, transparent 70%), radial-gradient(70% 45% at 0% 100%, var(--bg3) 0%, transparent 70%);
-  background-attachment: fixed;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
   -webkit-tap-highlight-color: transparent;
 }
@@ -61,8 +42,8 @@ button, input, select { font: inherit; color: inherit; }
 button { cursor: pointer; }
 :focus-visible { outline: 3px solid var(--lilac-d); outline-offset: 2px; }
 .app { max-width: 460px; margin: 0 auto; padding-block: 14px 110px; }
-.glass { background: var(--glass); border: 1px solid var(--glass-line); border-radius: 24px; box-shadow: var(--shadow); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-.hint { color: var(--ink2); font-size: 13px; }
+.glass { background: var(--glass); border: 1.5px solid var(--glass-line); border-radius: 22px; box-shadow: var(--shadow); }
+.hint { color: var(--ink2); font-size: 14px; }
 .num { font-variant-numeric: tabular-nums; }
 .ltr { direction: ltr; unicode-bidi: isolate; }
 .stack { display: flex; flex-direction: column; gap: 12px; }
@@ -74,11 +55,13 @@ button { cursor: pointer; }
 .round { width: 42px; height: 42px; border-radius: 15px; border: 1px solid var(--glass-line); background: var(--glass); display: grid; place-items: center; flex-shrink: 0; box-shadow: var(--shadow); }
 
 /* home */
-.hero { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+.hero { display: flex; align-items: center; gap: 12px; padding: 16px 18px; background: linear-gradient(135deg, #FFFFFF 40%, var(--lilac-a)); border-color: var(--lilac-line); }
+.welcome { font-family: "Fraunces", Georgia, serif; font-style: italic; font-weight: 800; font-size: 36px; line-height: 1.1; direction: ltr; text-align: right;
+  background: linear-gradient(90deg, #F0609A, #7C5CF0); -webkit-background-clip: text; background-clip: text; color: transparent; padding-bottom: 4px; }
 .mascot { width: 62px; height: 62px; flex-shrink: 0; transform-origin: 50% 100%; animation: sway 3.2s ease-in-out infinite; }
 @keyframes sway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
 .hero b { font-size: 19px; font-weight: 900; display: block; }
-.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 800; background: var(--peach); color: var(--peach-d); }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 800; background: var(--peach-a); color: var(--peach-d); border: 1.5px solid var(--peach-line); }
 .tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
 .tile {
   border: 0; border-radius: 26px; padding: 16px 14px 14px; text-align: start; display: flex; flex-direction: column; gap: 4px;
@@ -86,33 +69,57 @@ button { cursor: pointer; }
   transition: transform 0.18s cubic-bezier(0.3, 1.6, 0.5, 1);
 }
 .tile:active { transform: scale(0.95); }
-.tile svg { width: 58px; height: 58px; margin-bottom: auto; }
-.tile b { font-size: 17px; font-weight: 900; }
-.tile span { font-size: 12.5px; font-weight: 600; opacity: 0.8; }
-/* Solid colour first, for older Telegram Desktop engines without color-mix(). */
-.t-mint { background: var(--mint); background: linear-gradient(150deg, var(--mint), color-mix(in srgb, var(--mint) 55%, white)); color: var(--mint-d); }
-.t-lilac { background: var(--lilac); background: linear-gradient(150deg, var(--lilac), color-mix(in srgb, var(--lilac) 55%, white)); color: var(--lilac-d); }
-.t-peach { background: var(--peach); background: linear-gradient(150deg, var(--peach), color-mix(in srgb, var(--peach) 55%, white)); color: var(--peach-d); }
-.t-sky { background: var(--sky); background: linear-gradient(150deg, var(--sky), color-mix(in srgb, var(--sky) 55%, white)); color: var(--sky-d); }
-:root[data-theme="dark"] .tile, :root:not([data-theme="light"]) .tile { background-blend-mode: normal; }
+.tile svg { width: 60px; height: 60px; margin-bottom: auto; filter: drop-shadow(0 4px 6px rgba(60, 40, 120, 0.12)); }
+.tile b { font-size: 18.5px; font-weight: 900; }
+.tile span { font-size: 13.5px; font-weight: 700; opacity: 0.85; }
+.t-mint { background: linear-gradient(160deg, var(--mint-a), var(--mint-b)); color: var(--mint-d); border: 2px solid var(--mint-line); }
+.t-lilac { background: linear-gradient(160deg, var(--lilac-a), var(--lilac-b)); color: var(--lilac-d); border: 2px solid var(--lilac-line); }
+.t-peach { background: linear-gradient(160deg, var(--peach-a), var(--peach-b)); color: var(--peach-d); border: 2px solid var(--peach-line); }
+.t-sky { background: linear-gradient(160deg, var(--sky-a), var(--sky-b)); color: var(--sky-d); border: 2px solid var(--sky-line); }
+.tile { box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.9); }
+.tile.t-mint, .tile.t-lilac, .tile.t-peach, .tile.t-sky { border-width: 2px; }
 .mini { display: flex; gap: 10px; margin-top: 12px; }
-.mini button { flex: 1; border: 1px solid var(--glass-line); background: var(--glass); border-radius: 18px; padding: 12px; font-weight: 800; display: flex; align-items: center; gap: 8px; justify-content: center; box-shadow: var(--shadow); font-size: 13.5px; }
+.mini button { flex: 1; border: 2px solid var(--peach-line); background: var(--glass); border-radius: 18px; padding: 12px; font-weight: 800; display: flex; align-items: center; gap: 8px; justify-content: center; box-shadow: var(--shadow); font-size: 13.5px; }
 
 /* lists, chips, forms */
 .item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 0; width: 100%; text-align: start; background: transparent; border-top: 1px solid var(--glass-line); }
 .item:first-child { border-top: 0; }
 .item .dot { width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; font-weight: 900; font-size: 13px; flex-shrink: 0; }
-.item b { display: block; font-size: 15px; font-weight: 800; }
+.item b { display: block; font-size: 16px; font-weight: 800; }
 .item .price { margin-inline-start: auto; font-weight: 900; font-size: 13.5px; white-space: nowrap; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { border: 1.5px solid var(--glass-line); background: var(--glass); border-radius: 999px; padding: 7px 14px; font-weight: 800; font-size: 13.5px; }
+.chip { border: 1.5px solid var(--glass-line); background: var(--glass); border-radius: 999px; padding: 9px 16px; min-height: 44px; font-weight: 800; font-size: 14.5px; }
 .chip[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
-.input { width: 100%; border: 1.5px solid var(--glass-line); background: var(--glass); border-radius: 16px; padding: 12px 14px; outline: none; }
+.input { width: 100%; border: 1.5px solid var(--glass-line); background: #FFFFFF; border-radius: 16px; padding: 13px 14px; min-height: 50px; outline: none; }
 .input:focus { border-color: var(--brand); }
 .label { font-weight: 800; font-size: 13px; margin-bottom: 6px; display: block; }
 .err { color: var(--err); font-size: 12.5px; font-weight: 800; }
-.btn { border: 0; border-radius: 16px; padding: 12px 14px; font-weight: 900; background: var(--brand); color: #fff; }
-.btn.soft { background: var(--glass); color: var(--ink); border: 1px solid var(--glass-line); }
+.btn { border: 0; border-radius: 16px; padding: 12px 14px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; }
+.btn.soft { background: #FFFFFF; color: var(--ink); border: 1.5px solid var(--glass-line); }
+.seg { display: flex; padding: 4px; gap: 4px; border-radius: 16px; background: var(--lilac-a); border: 1.5px solid var(--lilac-line); }
+.seg button { flex: 1; border: 0; border-radius: 12px; padding: 10px; font-weight: 800; background: transparent; color: var(--ink2); }
+.seg button[aria-pressed="true"] { background: #FFFFFF; color: var(--lilac-d); box-shadow: 0 2px 8px rgba(106, 79, 208, 0.15); }
+select.input { appearance: none; -webkit-appearance: none; padding-inline-start: 38px;
+  background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237C5CF0' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat left 14px center; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* drawers: crowded parts fold away */
+.acc { background: #FFFFFF; border: 1.5px solid var(--glass-line); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; }
+.acc > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; min-height: 60px; }
+.acc > summary::-webkit-details-marker { display: none; }
+.acc > summary b { font-size: 16.5px; font-weight: 900; }
+.acc .chev { margin-inline-start: auto; width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; background: var(--lilac-a); color: var(--lilac-d); transition: transform 0.2s; flex-shrink: 0; }
+.acc[open] .chev { transform: rotate(180deg); }
+.acc[open] > summary { border-bottom: 1.5px solid var(--glass-line); }
+.acc .badge { width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; flex-shrink: 0; }
+.acc .badge svg { width: 26px; height: 26px; }
+.faq details { border-top: 1.5px solid var(--glass-line); }
+.faq details:first-child { border-top: 0; }
+.faq summary { list-style: none; display: flex; gap: 10px; align-items: center; padding: 13px 16px; font-weight: 800; cursor: pointer; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary .chev { margin-inline-start: auto; color: var(--lilac-d); transition: transform 0.2s; display: grid; }
+.faq details[open] summary .chev { transform: rotate(180deg); }
+.faq .ans { padding: 0 16px 14px; }
 .big { font-size: 26px; font-weight: 900; }
 
 /* test */
@@ -124,9 +131,9 @@ button { cursor: pointer; }
 
 /* sheet, main button, toast */
 .mainbar { position: fixed; inset: auto 0 0; z-index: 8; padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
-.mainbar button { display: block; width: 100%; max-width: 460px; margin: 0 auto; border: 0; border-radius: 18px; padding: 15px; background: var(--brand); color: #fff; font-weight: 900; font-size: 16px; box-shadow: 0 10px 24px rgba(22, 160, 107, 0.35); }
+.mainbar button { display: block; width: 100%; max-width: 460px; margin: 0 auto; border: 0; border-radius: 18px; padding: 15px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #fff; font-weight: 900; font-size: 16px; box-shadow: 0 10px 24px rgba(124, 92, 240, 0.32); }
 .sheet-wrap { position: fixed; inset: 0; z-index: 20; background: rgba(20, 18, 40, 0.35); display: flex; align-items: flex-end; justify-content: center; }
-.sheet { width: 100%; max-width: 500px; max-height: 90%; overflow: auto; background: var(--bg1); border-radius: 28px 28px 0 0; padding: 10px 18px calc(20px + env(safe-area-inset-bottom, 0px)); animation: up 0.28s cubic-bezier(0.2, 0.9, 0.3, 1); }
+.sheet { width: 100%; max-width: 500px; max-height: 90%; overflow: auto; background: #FFFFFF; border-radius: 28px 28px 0 0; padding: 10px 18px calc(20px + env(safe-area-inset-bottom, 0px)); animation: up 0.28s cubic-bezier(0.2, 0.9, 0.3, 1); }
 @keyframes up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
 .grab { width: 44px; height: 5px; border-radius: 3px; background: var(--ink2); opacity: 0.3; margin: 2px auto 12px; }
 .toast { position: fixed; inset-inline: 16px; bottom: calc(88px + env(safe-area-inset-bottom, 0px)); z-index: 30; max-width: 428px; margin: 0 auto; background: #1E2233; color: #fff; border-radius: 16px; padding: 12px 14px; font-size: 13.5px; font-weight: 700; }
@@ -137,10 +144,19 @@ button { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
 </style>
 
-<div class="ribbon">نسخه‌ی آزمایشی · اطلاعات نمونه</div>
-<div class="app" id="app"></div>
+<div class="ribbon">نسخه‌ی آزمایشی ۴ · اطلاعات نمونه</div>
+<div class="app" id="app"><div class="hint" style="text-align:center;padding:40px 0">در حال باز شدن…</div></div>
 <div id="mainbar"></div>
 <div id="overlay"></div>
+<script>
+/* Shows any script error on the page, so a screenshot tells us what went wrong. */
+window.addEventListener("error", function (e) {
+  var box = document.createElement("div");
+  box.setAttribute("style", "margin:12px auto;max-width:460px;padding:12px 14px;border-radius:14px;background:#FCE6E2;color:#B3261E;font:12px/1.5 monospace;direction:ltr;text-align:left");
+  box.textContent = "Error: " + e.message + " (line " + e.lineno + ")";
+  document.body.appendChild(box);
+});
+</script>
 
 <script>
 /* ── Telegram bridge: real calls inside Telegram, friendly stand-ins in a browser ── */
@@ -170,11 +186,15 @@ const left = (end) => Math.ceil((end - Date.now()) / DAY);
 
 /* ── cute two-tone icons ── */
 const ICON = {
-  book: `<svg viewBox="0 0 64 64"><rect x="10" y="12" width="40" height="44" rx="8" fill="currentColor" opacity=".9"/><rect x="16" y="8" width="38" height="44" rx="8" fill="#fff"/><rect x="22" y="18" width="24" height="4" rx="2" fill="currentColor" opacity=".5"/><rect x="22" y="27" width="18" height="4" rx="2" fill="currentColor" opacity=".35"/><path d="M42 8v16l-4-3-4 3V8z" fill="currentColor"/></svg>`,
-  target: `<svg viewBox="0 0 64 64"><circle cx="30" cy="34" r="22" fill="#fff"/><circle cx="30" cy="34" r="15" fill="currentColor" opacity=".35"/><circle cx="30" cy="34" r="7" fill="currentColor"/><path d="M31 33 52 12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M48 8l6 2-2 6-5-3z" fill="currentColor"/></svg>`,
-  pen: `<svg viewBox="0 0 64 64"><rect x="12" y="10" width="34" height="44" rx="8" fill="#fff"/><rect x="18" y="20" width="20" height="4" rx="2" fill="currentColor" opacity=".45"/><rect x="18" y="29" width="14" height="4" rx="2" fill="currentColor" opacity=".3"/><path d="M34 46 52 22l6 5-18 24-8 2z" fill="currentColor"/><circle cx="18" cy="44" r="4" fill="currentColor" opacity=".5"/></svg>`,
-  chat: `<svg viewBox="0 0 64 64"><path d="M10 28c0-10 9-17 21-17s21 7 21 17-9 17-21 17c-3 0-6-.4-8-1.2L12 49l3-9c-3-3-5-7-5-12z" fill="#fff"/><circle cx="22" cy="28" r="3.5" fill="currentColor"/><circle cx="31" cy="28" r="3.5" fill="currentColor" opacity=".7"/><circle cx="40" cy="28" r="3.5" fill="currentColor" opacity=".45"/><path d="M44 40c6 0 10 3 10 7l-1 6-6-3h-3c-6 0-10-3-10-7" fill="currentColor" opacity=".6"/></svg>`,
-  gift: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>`,
+  book: `<svg viewBox="0 0 64 64"><defs><linearGradient id="gB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8BE8D6"/><stop offset="1" stop-color="#2FB49B"/></linearGradient></defs><rect x="12" y="8" width="40" height="48" rx="10" fill="url(#gB)"/><rect x="12" y="8" width="9" height="48" rx="4.5" fill="#0B5C4E" opacity=".12"/><rect x="15" y="45" width="37" height="11" rx="5.5" fill="#fff"/><rect x="26" y="19" width="12" height="4" rx="2" fill="#fff"/><rect x="26" y="27" width="8" height="4" rx="2" fill="#fff" opacity=".65"/><path d="M41 8h7v16l-3.5-2.6L41 24z" fill="#FF8FB8"/></svg>`,
+  target: `<svg viewBox="0 0 64 64"><defs><linearGradient id="gT" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#CDBEFF"/><stop offset="1" stop-color="#7C5CF0"/></linearGradient></defs><circle cx="30" cy="35" r="22" fill="url(#gT)"/><circle cx="30" cy="35" r="15" fill="#fff"/><circle cx="30" cy="35" r="8.5" fill="url(#gT)"/><circle cx="30" cy="35" r="3" fill="#fff"/><path d="M30 35 50 15" stroke="#3E2E86" stroke-width="3.5" stroke-linecap="round"/><path d="M46 8.5l8.5 1.8-1.8 8.5-6.2-4.1z" fill="#FFC857"/></svg>`,
+  pen: `<svg viewBox="0 0 64 64"><defs><linearGradient id="gP" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFBCD6"/><stop offset="1" stop-color="#EE5D97"/></linearGradient></defs><rect x="12" y="10" width="38" height="47" rx="10" fill="url(#gP)"/><rect x="18" y="18" width="26" height="33" rx="6" fill="#fff"/><rect x="23" y="6" width="16" height="9" rx="4.5" fill="#FFD36E"/><path d="M24 34.5l5 5 9.5-10" stroke="#EE5D97" stroke-width="3.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+  chat: `<svg viewBox="0 0 64 64"><defs><linearGradient id="gC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE59A"/><stop offset="1" stop-color="#FFB224"/></linearGradient></defs><path d="M44 38c6.6 0 12 3.8 12 8.6 0 2.4-1.3 4.6-3.5 6.2L54 58l-5.6-2.7c-1.4.3-2.9.4-4.4.4-6.6 0-12-3.8-12-8.6" fill="#C9B8FF"/><path d="M8 28c0-10 9.8-17.5 22-17.5S52 18 52 28 42.2 45.5 30 45.5c-3 0-5.8-.4-8.4-1.2L11 49l3-8.6C10.2 37.2 8 32.8 8 28z" fill="url(#gC)"/><circle cx="21" cy="28" r="3.3" fill="#fff"/><circle cx="30" cy="28" r="3.3" fill="#fff"/><circle cx="39" cy="28" r="3.3" fill="#fff"/></svg>`,
+  gift: `<svg viewBox="0 0 24 24" width="22" height="22"><rect x="3.5" y="10" width="17" height="10.5" rx="2.6" fill="#FFBCD6"/><rect x="2.5" y="6.8" width="19" height="4.6" rx="2" fill="#EE5D97"/><rect x="10.8" y="6.8" width="2.4" height="13.7" fill="#FFD36E"/><path d="M12 6.8C9.6 2.8 5.6 4.4 7.6 6.8M12 6.8c2.4-4 6.4-2.4 4.4 0" fill="none" stroke="#EE5D97" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  chev: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>`,
+  cap: `<svg viewBox="0 0 24 24"><path d="M12 4 2 9l10 5 10-5z" fill="currentColor"/><path d="M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3z" fill="currentColor" opacity=".55"/></svg>`,
+  talk: `<svg viewBox="0 0 24 24"><path d="M3 10c0-3.6 3.6-6 8-6s8 2.4 8 6-3.6 6-8 6c-1 0-2-.1-2.9-.4L4 17l1.1-3C3.8 13 3 11.6 3 10z" fill="currentColor"/><path d="M20.5 12.5c.3.6.5 1.2.5 1.9 0 1-.4 1.9-1.1 2.6l.6 2.5-2.6-1.2c-.6.1-1.2.2-1.9.2-1.7 0-3.2-.5-4.3-1.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".55"/></svg>`,
+  medal: `<svg viewBox="0 0 24 24"><path d="M7 2h4l2 5H9zM17 2h-4l-2 5h4z" fill="currentColor" opacity=".55"/><circle cx="12" cy="14.5" r="6.5" fill="currentColor"/><path d="m12 11 1.1 2.2 2.4.3-1.8 1.7.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.7 2.4-.3z" fill="#fff"/></svg>`,
   phone: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>`,
   back: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>`,
   check: `<svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`,
@@ -231,6 +251,9 @@ const state = {
   trial: { date: "", time: "" },
   q: "",
 };
+/* Which drawers the user opened, so a re-render does not snap them shut. */
+const ui = { calcOpen: false };
+document.addEventListener("toggle", (e) => { const k = e.target.dataset && e.target.dataset.drawer; if (k) ui[k] = e.target.open; }, true);
 const ROUTES = ["home", "courses", "test", "register", "ask", "trial"];
 const route = () => { const r = (location.hash || "#home").slice(1); return ROUTES.includes(r) ? r : "home"; };
 const go = (r) => { haptic("light"); location.hash === "#" + r ? render() : (location.hash = r); };
@@ -244,7 +267,7 @@ function setMain(text, fn) {
     if (setMain.h) tg.MainButton.offClick(setMain.h);
     if (!text) { tg.MainButton.hide(); return; }
     setMain.h = () => { haptic("medium"); fn(); };
-    tg.MainButton.setParams({ text, color: getComputedStyle(document.documentElement).getPropertyValue("--brand").trim() || "#16A06B", text_color: "#ffffff", is_visible: true });
+    tg.MainButton.setParams({ text, color: getComputedStyle(document.documentElement).getPropertyValue("--brand").trim() || "#7C5CF0", text_color: "#ffffff", is_visible: true });
     tg.MainButton.onClick(setMain.h);
     return;
   }
@@ -267,8 +290,8 @@ function home() {
   const n = firstName();
   const dl = left(TERM.deadline);
   return `${topBar("")}
-    <div class="glass hero">${ICON.mascot}<div><b>سلام${n ? " " + esc(n) : ""}!</b><span class="hint">زبان یاد بگیریم؟</span>
-      ${dl >= 0 ? `<div style="margin-top:6px"><span class="pill num">${fa(dl)} روز تا پایان ثبت‌نام</span></div>` : ""}</div></div>
+    <div class="glass hero"><div style="flex:1;min-width:0"><div class="welcome">Welcome</div><b>سلام${n ? " " + esc(n) : ""}!</b><span class="hint">زبان یاد بگیریم؟</span>
+      ${dl >= 0 ? `<div style="margin-top:8px"><span class="pill num">${fa(dl)} روز تا پایان ثبت‌نام</span></div>` : ""}</div>${ICON.mascot}</div>
     <div class="tiles">
       <button class="tile t-mint" type="button" data-go="courses">${ICON.book}<b>دوره‌ها</b><span>شهریه و سانس</span></button>
       <button class="tile t-lilac" type="button" data-go="test">${ICON.target}<b>تعیین سطح</b><span>۲ دقیقه</span></button>
@@ -277,11 +300,20 @@ function home() {
     </div>
     <div class="mini"><button type="button" data-go="trial">${ICON.gift} کلاس آزمایشی رایگان</button></div>`;
 }
+/* Eight courses in three drawers, so the page stays short. */
+const GROUPS = [
+  { t: "دوره‌های عمومی", s: "بزرگسال، کودک، نوجوان", ids: ["adult", "kids", "teen"], c: "mint", i: "cap" },
+  { t: "مکالمه و تجاری", s: "آزاد، تجاری، خصوصی", ids: ["talk", "biz", "private"], c: "sky", i: "talk" },
+  { t: "آمادگی آزمون", s: "آیلتس و تافل", ids: ["ielts", "toefl"], c: "lilac", i: "medal" },
+];
 function courses() {
-  return `${topBar("دوره‌ها")}<div class="glass">${COURSES.map((c) => `<button class="item" type="button" data-course="${c.id}">
+  const row = (c) => `<button class="item" type="button" data-course="${c.id}">
       <div class="dot t-${c.c}">${c.name.slice(0, 1)}</div><div><b>${c.name}</b><span class="hint">${c.per === "جلسه" ? "هر جلسه" : "هر " + c.per}</span></div>
-      <span class="price num">${c.teen ? "از " : ""}${toman(c.fee)}</span></button>`).join("")}</div>
-    <div class="hint" style="text-align:center;margin-top:10px">مبلغ‌ها به تومان · کتاب جداست</div>`;
+      <span class="price num">${c.teen ? "از " : ""}${toman(c.fee)}</span></button>`;
+  return `${topBar("دوره‌ها")}<div class="stack">${GROUPS.map((g, i) => `<details class="acc"${i === 0 ? " open" : ""}>
+      <summary><span class="badge t-${g.c}">${ICON[g.i]}</span><div><b>${g.t}</b><div class="hint">${g.s}</div></div><span class="chev">${ICON.chev}</span></summary>
+      <div>${g.ids.map((id) => row(COURSES.find((c) => c.id === id))).join("")}</div></details>`).join("")}</div>
+    <div class="hint" style="text-align:center;margin-top:12px">مبلغ‌ها به تومان · کتاب جداست</div>`;
 }
 function quote(c) {
   const s = state.calc;
@@ -311,11 +343,14 @@ function courseSheet(id) {
     <div class="stack" style="margin-top:14px">
       ${c.teen ? `<div><span class="label">سطح</span><div class="row"><button class="btn soft" type="button" data-teen="-1">−</button><b class="num" style="flex:1;text-align:center">Teen ${s.teen}</b><button class="btn soft" type="button" data-teen="1">+</button></div></div>` : ""}
       ${c.id === "private" ? `<div><span class="label">تعداد جلسه</span><div class="row"><button class="btn soft" type="button" data-ses="-1">−</button><b class="num" style="flex:1;text-align:center">${fa(Math.max(5, s.sessions))} جلسه</b><button class="btn soft" type="button" data-ses="1">+</button></div></div>` : ""}
-      <div class="chips"><button class="chip" type="button" data-cm="in" aria-pressed="${s.mode === "in"}">حضوری</button><button class="chip" type="button" data-cm="on" aria-pressed="${s.mode === "on"}">آنلاین −۱۰٪</button>
-        <button class="chip" type="button" data-cx="sibling" aria-pressed="${s.sibling}">خواهر/برادر</button>${c.id !== "private" ? `<button class="chip" type="button" data-cx="two" aria-pressed="${s.two}">دو ترم</button>` : ""}</div>
-      <div class="glass" style="padding:14px 16px"><div class="row"><span class="hint">مبلغ نهایی</span><span style="margin-inline-start:auto" class="big num">${toman(q.total)}</span></div>
+      <div class="glass" style="padding:14px 16px;border-color:var(--lilac-line)"><div class="row"><span class="hint">مبلغ نهایی</span><span style="margin-inline-start:auto" class="big num">${toman(q.total)}</span></div>
         <div class="hint">${q.off ? `تخفیف «${q.off.t}» حساب شد${q.gross !== q.total ? ` (به‌جای ${toman(q.gross)})` : ""}.` : "بدون تخفیف."} تومان · کتاب جدا</div>
         ${q.perTerm > 5000000 ? `<div class="hint" style="margin-top:4px">قسطی: ${toman(q.perTerm * 0.6)} حالا، ${toman(q.perTerm * 0.4)} تا جلسه‌ی ششم</div>` : ""}</div>
+      <details class="acc"${ui.calcOpen ? " open" : ""} data-drawer="calcOpen"><summary><div><b>حضوری/آنلاین و تخفیف‌ها</b><div class="hint">${s.mode === "on" ? "آنلاین" : "حضوری"}${s.sibling ? " · خواهر/برادر" : ""}${s.two && c.id !== "private" ? " · دو ترم" : ""}</div></div><span class="chev">${ICON.chev}</span></summary>
+        <div class="stack" style="padding:14px 16px">
+          <div class="seg"><button type="button" data-cm="in" aria-pressed="${s.mode === "in"}">حضوری</button><button type="button" data-cm="on" aria-pressed="${s.mode === "on"}">آنلاین −۱۰٪</button></div>
+          <div class="chips"><button class="chip" type="button" data-cx="sibling" aria-pressed="${s.sibling}">خواهر/برادر هم میاد</button>${c.id !== "private" ? `<button class="chip" type="button" data-cx="two" aria-pressed="${s.two}">دو ترم با هم</button>` : ""}</div>
+        </div></details>
       <button class="btn" type="button" data-reg="${c.id}" style="padding:14px">ثبت‌نام همین دوره</button>
     </div>`);
 }
@@ -347,9 +382,8 @@ function result() {
       <div><span class="hint">سطح تو</span><div class="big ltr" style="color:var(--brand)">${esc(teen ? "Teen " + teen : t.level)}</div><span class="pill ltr" style="background:var(--lilac);color:var(--lilac-d)">CEFR ${esc(t.cefr)}</span></div></div>
     <div class="stack" style="margin-top:12px">
       <button class="btn" type="button" data-reg="${teen ? "teen" : "adult"}" ${teen ? `data-tl="${teen}"` : ""} style="padding:14px">ثبت‌نام تو همین سطح</button>
-      ${t.who === "adult" ? `<button class="btn soft" type="button" data-go="trial">${"کلاس آزمایشی رایگان"}</button>` : ""}
-      <button class="btn soft" type="button" data-act="story">اشتراک تو استوری تلگرام</button>
-      <button class="btn soft" type="button" data-act="retest">دوباره</button></div>`;
+      ${t.who === "adult" ? `<button class="btn soft" type="button" data-go="trial">${ICON.gift} کلاس آزمایشی رایگان</button>` : ""}
+      <div class="row"><button class="btn soft" type="button" data-act="story" style="flex:1">استوری کن</button><button class="btn soft" type="button" data-act="retest" style="flex:1">دوباره</button></div></div>`;
 }
 function register() {
   const r = state.reg;
@@ -357,16 +391,17 @@ function register() {
     <div><label class="label" for="nm">نام و نام خانوادگی</label><input id="nm" class="input" autocomplete="name" value="${esc(r.name)}" placeholder="سارا رضایی"><div class="err" id="e-nm"></div></div>
     <div><label class="label" for="ph">موبایل</label><div class="row"><input id="ph" class="input num" inputmode="tel" value="${esc(r.phone)}" placeholder="۰۹۱۲۳۴۵۶۷۸۹" style="flex:1"><button class="btn soft" type="button" data-act="contact" style="white-space:nowrap">با یه لمس</button></div><div class="err" id="e-ph"></div></div>
     <div><label class="label" for="cs">دوره</label><select id="cs" class="input">${COURSES.map((c) => `<option value="${c.id}" ${r.course === c.id ? "selected" : ""}>${c.name}</option>`).join("")}</select></div>
-    <div><span class="label">روز</span><div class="chips">${DAYS.map((d) => `<button class="chip" type="button" data-day="${d.id}" aria-pressed="${r.day === d.id}">${d.label}</button>`).join("")}</div></div>
-    <div><span class="label">ساعت</span><div class="chips">${TIMES.map((x) => `<button class="chip" type="button" data-time="${x.id}" aria-pressed="${r.time === x.id}">${x.label}</button>`).join("")}</div></div>
-    <div class="chips"><button class="chip" type="button" data-rm="in" aria-pressed="${r.mode === "in"}">حضوری</button><button class="chip" type="button" data-rm="on" aria-pressed="${r.mode === "on"}">آنلاین</button></div>
+    <div class="stack"><div><label class="label" for="dy">روز</label><select id="dy" class="input"><option value="">فرقی نداره</option>${DAYS.map((d) => `<option value="${d.id}" ${r.day === d.id ? "selected" : ""}>${d.label}</option>`).join("")}</select></div>
+      <div><label class="label" for="tm">ساعت</label><select id="tm" class="input"><option value="">فرقی نداره</option>${TIMES.map((x) => `<option value="${x.id}" ${r.time === x.id ? "selected" : ""}>${x.label}</option>`).join("")}</select></div></div>
+    <div class="seg"><button type="button" data-rm="in" aria-pressed="${r.mode === "in"}">حضوری</button><button type="button" data-rm="on" aria-pressed="${r.mode === "on"}">آنلاین</button></div>
   </div>`;
 }
 function ask() {
   const res = state.q ? search(state.q) : [];
   return `${topBar("بپرس")}<form class="row" id="af"><input id="aq" class="input" value="${esc(state.q)}" placeholder="سؤالت رو بنویس…" autocomplete="off" style="flex:1"><button class="btn" type="submit">بپرس</button></form>
-    <div class="chips" style="margin-top:10px">${KB.slice(0, 6).map((x) => `<button class="chip" type="button" data-q="${esc(x.q)}">${esc(x.q)}</button>`).join("")}</div>
-    <div class="stack" style="margin-top:12px">${state.q ? (res.length ? res.map((x) => `<div class="glass" style="padding:14px 16px"><b>${esc(x.q)}</b><div style="margin-top:4px">${esc(x.a)}</div><div class="hint" style="margin-top:6px">منبع: ${esc(x.src)}</div></div>`).join("") : `<div class="glass" style="padding:14px 16px">جوابش تو اسناد نیست؛ با دفتر تماس بگیر.</div>`) : ""}
+    <div class="stack" style="margin-top:12px">${state.q ? (res.length ? res.map((x) => `<div class="glass" style="padding:14px 16px;border-color:var(--lilac-line)"><b>${esc(x.q)}</b><div style="margin-top:4px">${esc(x.a)}</div><div class="hint" style="margin-top:6px">منبع: ${esc(x.src)}</div></div>`).join("") : `<div class="glass" style="padding:14px 16px">جوابش تو اسناد نیست؛ با دفتر تماس بگیر.</div>`) : ""}
+      <div class="label" style="margin:4px 4px 0">سؤال‌های پرتکرار</div>
+      <div class="glass faq">${KB.map((x) => `<details><summary>${esc(x.q)}<span class="chev">${ICON.chev}</span></summary><div class="ans">${esc(x.a)}<div class="hint" style="margin-top:4px">منبع: ${esc(x.src)}</div></div></details>`).join("")}</div>
       <div class="glass" style="padding:12px 16px"><div class="row"><span class="hint">تلفن دفتر</span><b class="num" style="margin-inline-start:auto;user-select:all">۰۲۱-۱۲۳۴۵۶۷۸</b><button class="btn soft" type="button" data-copy="02112345678">کپی</button></div>
         <div class="hint" style="margin-top:6px">خیابان نمونه، پلاک ۱۲ · شنبه تا چهارشنبه ۹ تا ۲۰</div></div></div>`;
 }
@@ -378,8 +413,8 @@ function trialDays() {
 function trial() {
   const t = state.trial;
   return `${topBar("کلاس آزمایشی")}<div class="glass stack" style="padding:16px"><b>یه جلسه‌ی واقعی، رایگان 🎁</b><span class="hint">برای بزرگسالان، بعد از تعیین سطح</span>
-    <div><span class="label">روز</span><div class="chips">${trialDays().map((d) => { const k = d.toISOString().slice(0, 10); return `<button class="chip" type="button" data-td="${k}" aria-pressed="${t.date === k}">${faDate(d)}</button>`; }).join("")}</div></div>
-    <div><span class="label">ساعت</span><div class="chips">${TIMES.map((x) => `<button class="chip" type="button" data-tt="${x.id}" aria-pressed="${t.time === x.id}">${x.label}</button>`).join("")}</div></div>
+    <div><label class="label" for="td">روز</label><select id="td" class="input"><option value="">انتخاب کن</option>${trialDays().map((d) => { const k = d.toISOString().slice(0, 10); return `<option value="${k}" ${t.date === k ? "selected" : ""}>${faDate(d)}</option>`; }).join("")}</select></div>
+    <div><label class="label" for="tt">ساعت</label><select id="tt" class="input"><option value="">انتخاب کن</option>${TIMES.map((x) => `<option value="${x.id}" ${t.time === x.id ? "selected" : ""}>${x.label}</option>`).join("")}</select></div>
     <div class="err" id="e-tr"></div></div>`;
 }
 function search(q) {
@@ -398,7 +433,7 @@ function render() {
   if (r === "ask") $("#af").onsubmit = (e) => { e.preventDefault(); state.q = $("#aq").value.trim(); render(); };
 }
 const digits = (p) => p.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/\D/g, "").replace(/^98/, "0");
-function readReg() { const r = state.reg; r.name = $("#nm").value.trim(); r.phone = $("#ph").value.trim(); r.course = $("#cs").value; store.set("reg", r); return r; }
+function readReg() { const r = state.reg; r.name = $("#nm").value.trim(); r.phone = $("#ph").value.trim(); r.course = $("#cs").value; r.day = $("#dy").value; r.time = $("#tm").value; store.set("reg", r); return r; }
 function done(title, sub) {
   haptic("ok");
   $("#app").innerHTML = `${topBar(title)}<div class="glass done"><div class="ok">${ICON.check}</div><b style="font-size:18px">${title}</b><div class="hint" style="margin-top:6px">${sub}</div></div>`;
@@ -417,6 +452,7 @@ function submitReg() {
 }
 function submitTrial() {
   const t = state.trial;
+  t.date = $("#td").value; t.time = $("#tt").value;
   if (!t.date || !t.time) { $("#e-tr").textContent = "روز و ساعت رو انتخاب کن."; haptic("heavy"); return; }
   if (!state.reg.name || !state.reg.phone) { toast("یه بار اسم و شماره‌ت رو تو ثبت‌نام بنویس؛ بعد رزرو با یه لمسه."); go("register"); return; }
   if (CAN_SEND) { try { tg.sendData(JSON.stringify({ type: "trial", ...t, name: state.reg.name, phone: digits(state.reg.phone) })); return; } catch (e) {} }
@@ -426,15 +462,15 @@ async function story() {
   const t = state.test;
   const cv = document.createElement("canvas"); cv.width = 540; cv.height = 960; const g = cv.getContext("2d");
   try { await document.fonts.load("900 60px Vazirmatn"); } catch (e) {}
-  const grd = g.createLinearGradient(0, 0, 540, 960); grd.addColorStop(0, "#C9F2DE"); grd.addColorStop(0.55, "#E2D9FF"); grd.addColorStop(1, "#FFDCCB");
+  const grd = g.createLinearGradient(0, 0, 540, 960); grd.addColorStop(0, "#FFDCEA"); grd.addColorStop(0.5, "#E4DBFF"); grd.addColorStop(1, "#D2F4EC");
   g.fillStyle = grd; g.fillRect(0, 0, 540, 960);
   g.fillStyle = "rgba(255,255,255,0.6)"; g.beginPath();
   if (g.roundRect) g.roundRect(50, 250, 440, 440, 48); else g.rect(50, 250, 440, 440);
   g.fill();
   g.textAlign = "center"; g.fillStyle = "#1E2233";
   g.direction = "rtl"; g.font = "800 32px Vazirmatn"; g.fillText("سطح زبان من", 270, 340);
-  g.direction = "ltr"; g.font = "900 62px Vazirmatn"; g.fillStyle = "#16A06B"; g.fillText(t.level || "Intermediate", 270, 440);
-  g.fillStyle = "#5841C4"; g.font = "800 30px Vazirmatn"; g.fillText("CEFR " + (t.cefr || "B1"), 270, 495);
+  g.direction = "ltr"; g.font = "900 62px Vazirmatn"; g.fillStyle = "#6A4FD0"; g.fillText(t.level || "Intermediate", 270, 440);
+  g.fillStyle = "#C2477C"; g.font = "800 30px Vazirmatn"; g.fillText("CEFR " + (t.cefr || "B1"), 270, 495);
   g.direction = "rtl"; g.fillStyle = "#1E2233"; g.font = "900 36px Vazirmatn"; g.fillText("آموزشگاه زبان شما", 270, 620);
   g.font = "700 26px Vazirmatn"; g.fillStyle = "#6C7088"; g.fillText("تو هم سطحت رو بسنج", 270, 820);
   sheet(`<b style="font-size:17px">استوری تو</b><div class="hint">داخل تلگرام با یه لمس تو استوری‌ت می‌ره، با لینک اپ.</div>
@@ -454,9 +490,7 @@ document.addEventListener("click", async (e) => {
   if (d.teen) { state.calc.teen = Math.min(20, Math.max(1, state.calc.teen + Number(d.teen))); haptic("light"); return courseSheet("teen"); }
   if (d.ses) { state.calc.sessions = Math.min(40, Math.max(5, state.calc.sessions + Number(d.ses))); haptic("light"); return courseSheet("private"); }
   if (d.reg) { state.reg.course = d.reg; if (d.tl) state.calc.teen = Number(d.tl); state.reg.mode = state.calc.mode; store.set("reg", state.reg); return go("register"); }
-  if (d.day || d.time || d.rm) { readReg(); if (d.day) state.reg.day = d.day; if (d.time) state.reg.time = d.time; if (d.rm) state.reg.mode = d.rm; store.set("reg", state.reg); haptic("light"); return render(); }
-  if (d.td) { state.trial.date = d.td; haptic("light"); return render(); }
-  if (d.tt) { state.trial.time = d.tt; haptic("light"); return render(); }
+  if (d.rm) { readReg(); state.reg.mode = d.rm; store.set("reg", state.reg); haptic("light"); return render(); }
   if (d.who) { state.test = { who: d.who, i: 0, ans: [] }; store.set("test", state.test); haptic("light"); return render(); }
   if (d.ans !== undefined) {
     const t = state.test; t.ans[t.i] = Number(d.ans); t.i += 1; haptic("light");
@@ -476,7 +510,6 @@ document.addEventListener("click", async (e) => {
   }
 });
 /* Inside Telegram: follow the user's theme. */
-if (tg && tg.colorScheme) document.documentElement.dataset.theme = tg.colorScheme === "dark" ? "dark" : "light";
 if (tg) { try { const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg1").trim(); tg.setHeaderColor(bg); tg.setBackgroundColor(bg); } catch (e) {} }
 render();
 </script>
