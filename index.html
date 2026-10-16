@@ -103,6 +103,23 @@ select.input { appearance: none; -webkit-appearance: none; padding-inline-start:
   background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237C5CF0' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat left 14px center; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
+/* calendar */
+.datebtn { display: flex; align-items: center; gap: 10px; text-align: start; font-weight: 800; }
+.datebtn > svg { width: 26px; height: 26px; flex-shrink: 0; }
+.datebtn .ph { color: var(--ink2); font-weight: 600; }
+.datebtn .chev { margin-inline-start: auto; color: var(--lilac-d); display: grid; }
+.cal-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.cal-head b { flex: 1; text-align: center; font-size: 18px; font-weight: 900; }
+.cal-head .round:disabled { opacity: 0.3; }
+.flip svg { transform: scaleX(-1); }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; }
+.cal .wd { text-align: center; font-size: 12.5px; font-weight: 800; color: var(--ink2); }
+.cd { position: relative; aspect-ratio: 1; min-height: 40px; border: 1.5px solid var(--lilac-line); background: #FFFFFF; border-radius: 14px; font-weight: 800; font-size: 15px; display: grid; place-items: center; padding: 0; }
+.cd:disabled { border-color: transparent; background: #F6F5FA; color: #C4C3D2; cursor: default; }
+.cd.on { background: linear-gradient(135deg, var(--brand), var(--brand-2)); border-color: transparent; color: #FFFFFF; transform: scale(1.06); }
+.cd .tk { position: absolute; top: -6px; inset-inline-end: -6px; width: 20px; height: 20px; border-radius: 50%; background: #2DBE8C; border: 2px solid #FFFFFF; display: grid; place-items: center; animation: pop 0.3s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.btn:disabled { opacity: 0.5; }
+
 /* drawers: crowded parts fold away */
 .acc { background: #FFFFFF; border: 1.5px solid var(--glass-line); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; }
 .acc > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; min-height: 60px; }
@@ -144,7 +161,7 @@ select.input { appearance: none; -webkit-appearance: none; padding-inline-start:
 @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
 </style>
 
-<div class="ribbon">نسخه‌ی آزمایشی ۴ · اطلاعات نمونه</div>
+<div class="ribbon">نسخه‌ی آزمایشی ۵ · اطلاعات نمونه</div>
 <div class="app" id="app"><div class="hint" style="text-align:center;padding:40px 0">در حال باز شدن…</div></div>
 <div id="mainbar"></div>
 <div id="overlay"></div>
@@ -191,6 +208,8 @@ const ICON = {
   pen: `<svg viewBox="0 0 64 64"><defs><linearGradient id="gP" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFBCD6"/><stop offset="1" stop-color="#EE5D97"/></linearGradient></defs><rect x="12" y="10" width="38" height="47" rx="10" fill="url(#gP)"/><rect x="18" y="18" width="26" height="33" rx="6" fill="#fff"/><rect x="23" y="6" width="16" height="9" rx="4.5" fill="#FFD36E"/><path d="M24 34.5l5 5 9.5-10" stroke="#EE5D97" stroke-width="3.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
   chat: `<svg viewBox="0 0 64 64"><defs><linearGradient id="gC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE59A"/><stop offset="1" stop-color="#FFB224"/></linearGradient></defs><path d="M44 38c6.6 0 12 3.8 12 8.6 0 2.4-1.3 4.6-3.5 6.2L54 58l-5.6-2.7c-1.4.3-2.9.4-4.4.4-6.6 0-12-3.8-12-8.6" fill="#C9B8FF"/><path d="M8 28c0-10 9.8-17.5 22-17.5S52 18 52 28 42.2 45.5 30 45.5c-3 0-5.8-.4-8.4-1.2L11 49l3-8.6C10.2 37.2 8 32.8 8 28z" fill="url(#gC)"/><circle cx="21" cy="28" r="3.3" fill="#fff"/><circle cx="30" cy="28" r="3.3" fill="#fff"/><circle cx="39" cy="28" r="3.3" fill="#fff"/></svg>`,
   gift: `<svg viewBox="0 0 24 24" width="22" height="22"><rect x="3.5" y="10" width="17" height="10.5" rx="2.6" fill="#FFBCD6"/><rect x="2.5" y="6.8" width="19" height="4.6" rx="2" fill="#EE5D97"/><rect x="10.8" y="6.8" width="2.4" height="13.7" fill="#FFD36E"/><path d="M12 6.8C9.6 2.8 5.6 4.4 7.6 6.8M12 6.8c2.4-4 6.4-2.4 4.4 0" fill="none" stroke="#EE5D97" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+  cal: `<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="4" fill="#E4DBFF"/><path d="M3 9a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v1H3z" fill="#7C5CF0"/><rect x="7" y="3" width="2.2" height="5" rx="1.1" fill="#3E2E86"/><rect x="14.8" y="3" width="2.2" height="5" rx="1.1" fill="#3E2E86"/><circle cx="12" cy="15.5" r="2.3" fill="#EE5D97"/></svg>`,
+  tick: `<span class="tk"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>`,
   chev: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>`,
   cap: `<svg viewBox="0 0 24 24"><path d="M12 4 2 9l10 5 10-5z" fill="currentColor"/><path d="M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3z" fill="currentColor" opacity=".55"/></svg>`,
   talk: `<svg viewBox="0 0 24 24"><path d="M3 10c0-3.6 3.6-6 8-6s8 2.4 8 6-3.6 6-8 6c-1 0-2-.1-2.9-.4L4 17l1.1-3C3.8 13 3 11.6 3 10z" fill="currentColor"/><path d="M20.5 12.5c.3.6.5 1.2.5 1.9 0 1-.4 1.9-1.1 2.6l.6 2.5-2.6-1.2c-.6.1-1.2.2-1.9.2-1.7 0-3.2-.5-4.3-1.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".55"/></svg>`,
@@ -252,7 +271,7 @@ const state = {
   q: "",
 };
 /* Which drawers the user opened, so a re-render does not snap them shut. */
-const ui = { calcOpen: false };
+const ui = { calcOpen: false, calM: 0 };
 document.addEventListener("toggle", (e) => { const k = e.target.dataset && e.target.dataset.drawer; if (k) ui[k] = e.target.open; }, true);
 const ROUTES = ["home", "courses", "test", "register", "ask", "trial"];
 const route = () => { const r = (location.hash || "#home").slice(1); return ROUTES.includes(r) ? r : "home"; };
@@ -405,15 +424,41 @@ function ask() {
       <div class="glass" style="padding:12px 16px"><div class="row"><span class="hint">تلفن دفتر</span><b class="num" style="margin-inline-start:auto;user-select:all">۰۲۱-۱۲۳۴۵۶۷۸</b><button class="btn soft" type="button" data-copy="02112345678">کپی</button></div>
         <div class="hint" style="margin-top:6px">خیابان نمونه، پلاک ۱۲ · شنبه تا چهارشنبه ۹ تا ۲۰</div></div></div>`;
 }
-function trialDays() {
-  const out = []; const d = new Date(); d.setHours(12, 0, 0, 0);
-  while (out.length < 5) { d.setTime(d.getTime() + DAY); if (d.getDay() !== 4 && d.getDay() !== 5) out.push(new Date(d)); }
+/* Shamsi month calendar for the trial booking: tap a day, it gets a tick. */
+const PF = new Intl.DateTimeFormat("en-u-ca-persian-nu-latn", { year: "numeric", month: "numeric", day: "numeric" });
+const jp = (d) => { const o = {}; for (const p of PF.formatToParts(d)) if (p.type !== "literal") o[p.type] = Number(p.value); return o; };
+const pad = (n) => String(n).padStart(2, "0");
+const dkey = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+const noon = (t) => { const x = new Date(t); x.setHours(12, 0, 0, 0); return x; };
+const firstOfMonth = (d) => noon(d.getTime() - (jp(d).day - 1) * DAY);
+/* Classes run Saturday to Wednesday; bookable from tomorrow, up to 30 days ahead. */
+const canBook = (d) => { const n = Math.round((d - noon(Date.now())) / DAY); return n >= 1 && n <= 30 && d.getDay() !== 4 && d.getDay() !== 5; };
+function monthDays(offset) {
+  let d = firstOfMonth(noon(Date.now()));
+  for (let k = 0; k < offset; k++) d = firstOfMonth(noon(d.getTime() + 32 * DAY));
+  const out = [], m = jp(d).month;
+  for (let x = d; jp(x).month === m; x = noon(x.getTime() + DAY)) out.push(x);
   return out;
+}
+function calSheet() {
+  const days = monthDays(ui.calM);
+  const sel = state.trial.date;
+  const title = new Intl.DateTimeFormat("fa-IR-u-ca-persian", { month: "long", year: "numeric" }).format(days[0]);
+  const blanks = Array((days[0].getDay() + 1) % 7).fill("<span></span>");
+  const cells = days.map((d) => {
+    const k = dkey(d), on = k === sel;
+    return `<button type="button" class="cd${on ? " on" : ""}" ${canBook(d) ? `data-cday="${k}"` : "disabled"} aria-pressed="${on}" aria-label="${faDate(d)}">${fa(jp(d).day)}${on ? ICON.tick : ""}</button>`;
+  });
+  sheet(`<div class="cal-head"><button class="round" type="button" data-calm="-1" ${ui.calM > 0 ? "" : "disabled"} aria-label="ماه قبل">${ICON.back}</button>
+      <b>${title}</b><button class="round flip" type="button" data-calm="1" ${ui.calM < 1 ? "" : "disabled"} aria-label="ماه بعد">${ICON.back}</button></div>
+    <div class="cal">${["ش", "ی", "د", "س", "چ", "پ", "ج"].map((w) => `<span class="wd">${w}</span>`).join("")}${blanks.join("")}${cells.join("")}</div>
+    <div class="hint" style="text-align:center;margin:10px 0 12px">پنجشنبه و جمعه کلاس نداریم</div>
+    <button class="btn" type="button" data-act="calok" style="width:100%;padding:14px" ${sel ? "" : "disabled"}>${sel ? "تأیید · " + faDate(new Date(sel + "T12:00:00")) : "یه روز رو لمس کن"}</button>`);
 }
 function trial() {
   const t = state.trial;
   return `${topBar("کلاس آزمایشی")}<div class="glass stack" style="padding:16px"><b>یه جلسه‌ی واقعی، رایگان 🎁</b><span class="hint">برای بزرگسالان، بعد از تعیین سطح</span>
-    <div><label class="label" for="td">روز</label><select id="td" class="input"><option value="">انتخاب کن</option>${trialDays().map((d) => { const k = d.toISOString().slice(0, 10); return `<option value="${k}" ${t.date === k ? "selected" : ""}>${faDate(d)}</option>`; }).join("")}</select></div>
+    <div><span class="label">روز</span><button class="input datebtn" type="button" data-act="cal">${ICON.cal}${t.date ? `<span>${faDate(new Date(t.date + "T12:00:00"))}</span>` : `<span class="ph">انتخاب از تقویم</span>`}<span class="chev">${ICON.chev}</span></button></div>
     <div><label class="label" for="tt">ساعت</label><select id="tt" class="input"><option value="">انتخاب کن</option>${TIMES.map((x) => `<option value="${x.id}" ${t.time === x.id ? "selected" : ""}>${x.label}</option>`).join("")}</select></div>
     <div class="err" id="e-tr"></div></div>`;
 }
@@ -452,7 +497,7 @@ function submitReg() {
 }
 function submitTrial() {
   const t = state.trial;
-  t.date = $("#td").value; t.time = $("#tt").value;
+  t.time = $("#tt").value;
   if (!t.date || !t.time) { $("#e-tr").textContent = "روز و ساعت رو انتخاب کن."; haptic("heavy"); return; }
   if (!state.reg.name || !state.reg.phone) { toast("یه بار اسم و شماره‌ت رو تو ثبت‌نام بنویس؛ بعد رزرو با یه لمسه."); go("register"); return; }
   if (CAN_SEND) { try { tg.sendData(JSON.stringify({ type: "trial", ...t, name: state.reg.name, phone: digits(state.reg.phone) })); return; } catch (e) {} }
@@ -498,6 +543,8 @@ document.addEventListener("click", async (e) => {
     store.set("test", t); return render();
   }
   if (d.q) { state.q = d.q; return render(); }
+  if (d.cday) { state.trial.date = d.cday; haptic("light"); return calSheet(); }
+  if (d.calm) { ui.calM = Math.max(0, Math.min(1, ui.calM + Number(d.calm))); return calSheet(); }
   if (d.copy) { try { await navigator.clipboard.writeText(d.copy); toast("کپی شد"); } catch (err) { toast(fa(d.copy)); } return; }
   switch (d.act) {
     case "contact":
@@ -507,6 +554,8 @@ document.addEventListener("click", async (e) => {
     case "homescreen": if (IN_TG && tg.addToHomeScreen) tg.addToHomeScreen(); else toast("داخل تلگرام، آیکون آموزشگاه روی صفحه‌ی گوشی میاد."); return;
     case "retest": state.test = { who: "", i: 0, ans: [] }; store.set("test", state.test); return render();
     case "story": return story();
+    case "cal": if ($("#tt")) state.trial.time = $("#tt").value; haptic("light"); return calSheet();
+    case "calok": haptic("ok"); closeSheet(); return render();
   }
 });
 /* Inside Telegram: follow the user's theme. */
