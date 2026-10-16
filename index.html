@@ -256,7 +256,7 @@ function sheet(html) {
   $("#sw").onclick = (e) => { if (e.target.id === "sw") closeSheet(); };
 }
 function closeSheet() { $("#overlay").innerHTML = ""; }
-function top(title) {
+function topBar(title) {
   if (tg && tg.BackButton) title ? tg.BackButton.show() : tg.BackButton.hide();
   return `<div class="top">${title ? `<button class="round" type="button" data-act="back" aria-label="برگشت">${ICON.back}</button>` : ""}<h1>${title || "آموزشگاه زبان شما"}</h1>
     ${title ? "" : `<button class="round" type="button" data-act="homescreen" aria-label="آیکون روی صفحه‌ی گوشی">${ICON.phone}</button>`}</div>`;
@@ -266,7 +266,7 @@ function top(title) {
 function home() {
   const n = firstName();
   const dl = left(TERM.deadline);
-  return `${top("")}
+  return `${topBar("")}
     <div class="glass hero">${ICON.mascot}<div><b>سلام${n ? " " + esc(n) : ""}!</b><span class="hint">زبان یاد بگیریم؟</span>
       ${dl >= 0 ? `<div style="margin-top:6px"><span class="pill num">${fa(dl)} روز تا پایان ثبت‌نام</span></div>` : ""}</div></div>
     <div class="tiles">
@@ -278,7 +278,7 @@ function home() {
     <div class="mini"><button type="button" data-go="trial">${ICON.gift} کلاس آزمایشی رایگان</button></div>`;
 }
 function courses() {
-  return `${top("دوره‌ها")}<div class="glass">${COURSES.map((c) => `<button class="item" type="button" data-course="${c.id}">
+  return `${topBar("دوره‌ها")}<div class="glass">${COURSES.map((c) => `<button class="item" type="button" data-course="${c.id}">
       <div class="dot t-${c.c}">${c.name.slice(0, 1)}</div><div><b>${c.name}</b><span class="hint">${c.per === "جلسه" ? "هر جلسه" : "هر " + c.per}</span></div>
       <span class="price num">${c.teen ? "از " : ""}${toman(c.fee)}</span></button>`).join("")}</div>
     <div class="hint" style="text-align:center;margin-top:10px">مبلغ‌ها به تومان · کتاب جداست</div>`;
@@ -323,17 +323,17 @@ function testPage() {
   const t = state.test;
   if (t.done) return result();
   if (!t.who) {
-    return `${top("تعیین سطح")}<div class="glass" style="padding:16px"><b>۸ سؤال، ۲ دقیقه</b><div class="hint">یه تخمین سریع؛ آزمون اصلی رایگانه و مصاحبه‌ی شفاهی هم داره.</div></div>
+    return `${topBar("تعیین سطح")}<div class="glass" style="padding:16px"><b>۸ سؤال، ۲ دقیقه</b><div class="hint">یه تخمین سریع؛ آزمون اصلی رایگانه و مصاحبه‌ی شفاهی هم داره.</div></div>
       <div class="tiles"><button class="tile t-peach" type="button" data-who="kid" style="min-height:110px"><b>کودک</b><span>۷ تا ۱۲</span></button>
       <button class="tile t-lilac" type="button" data-who="teen" style="min-height:110px"><b>نوجوان</b><span>۱۲ تا ۱۷</span></button>
       <button class="tile t-mint" type="button" data-who="adult" style="grid-column:1/-1;min-height:84px"><b>بزرگسال</b><span>۱۷ سال به بالا</span></button></div>`;
   }
   if (t.who === "kid") {
-    return `${top("تعیین سطح")}<div class="glass done"><div class="ok">${ICON.check}</div><b style="font-size:18px">دوره‌ی کودکان مناسبه</b><div class="hint">با بازی، داستان و آهنگ · حداکثر ۸ نفر</div>
+    return `${topBar("تعیین سطح")}<div class="glass done"><div class="ok">${ICON.check}</div><b style="font-size:18px">دوره‌ی کودکان مناسبه</b><div class="hint">با بازی، داستان و آهنگ · حداکثر ۸ نفر</div>
       <div class="row" style="margin-top:14px"><button class="btn soft" type="button" data-act="retest" style="flex:1">برگشت</button><button class="btn" type="button" data-reg="kids" style="flex:1">ثبت‌نام</button></div></div>`;
   }
   const q = QUIZ[t.i];
-  return `${top("تعیین سطح")}<div class="row"><div class="bar" style="flex:1"><div style="width:${(t.i / QUIZ.length) * 100}%"></div></div><span class="hint num">${fa(t.i + 1)}/${fa(QUIZ.length)}</span></div>
+  return `${topBar("تعیین سطح")}<div class="row"><div class="bar" style="flex:1"><div style="width:${(t.i / QUIZ.length) * 100}%"></div></div><span class="hint num">${fa(t.i + 1)}/${fa(QUIZ.length)}</span></div>
     <div class="glass q" style="margin-top:12px">${esc(q.q)}</div>
     <div class="stack" style="margin-top:12px">${q.o.map((o, k) => `<button class="opt" type="button" data-ans="${k}">${esc(o)}</button>`).join("")}</div>`;
 }
@@ -341,7 +341,7 @@ function result() {
   const t = state.test;
   const teen = t.who === "teen" ? Math.min(20, Math.max(1, Math.round(1 + (t.score * 19) / QUIZ.length))) : 0;
   const r = 38, C = 2 * Math.PI * r;
-  return `${top("نتیجه")}<div class="glass" style="padding:18px;display:flex;gap:16px;align-items:center">
+  return `${topBar("نتیجه")}<div class="glass" style="padding:18px;display:flex;gap:16px;align-items:center">
       <svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--glass-line)" stroke-width="10"/><circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--brand)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(C * t.score) / QUIZ.length} ${C}" transform="rotate(-90 46 46)"/>
         <text x="46" y="52" text-anchor="middle" font-size="19" font-weight="900" fill="var(--ink)" font-family="Vazirmatn">${fa(t.score)}/${fa(QUIZ.length)}</text></svg>
       <div><span class="hint">سطح تو</span><div class="big ltr" style="color:var(--brand)">${esc(teen ? "Teen " + teen : t.level)}</div><span class="pill ltr" style="background:var(--lilac);color:var(--lilac-d)">CEFR ${esc(t.cefr)}</span></div></div>
@@ -353,7 +353,7 @@ function result() {
 }
 function register() {
   const r = state.reg;
-  return `${top("ثبت‌نام")}<div class="glass stack" style="padding:16px">
+  return `${topBar("ثبت‌نام")}<div class="glass stack" style="padding:16px">
     <div><label class="label" for="nm">نام و نام خانوادگی</label><input id="nm" class="input" autocomplete="name" value="${esc(r.name)}" placeholder="سارا رضایی"><div class="err" id="e-nm"></div></div>
     <div><label class="label" for="ph">موبایل</label><div class="row"><input id="ph" class="input num" inputmode="tel" value="${esc(r.phone)}" placeholder="۰۹۱۲۳۴۵۶۷۸۹" style="flex:1"><button class="btn soft" type="button" data-act="contact" style="white-space:nowrap">با یه لمس</button></div><div class="err" id="e-ph"></div></div>
     <div><label class="label" for="cs">دوره</label><select id="cs" class="input">${COURSES.map((c) => `<option value="${c.id}" ${r.course === c.id ? "selected" : ""}>${c.name}</option>`).join("")}</select></div>
@@ -364,7 +364,7 @@ function register() {
 }
 function ask() {
   const res = state.q ? search(state.q) : [];
-  return `${top("بپرس")}<form class="row" id="af"><input id="aq" class="input" value="${esc(state.q)}" placeholder="سؤالت رو بنویس…" autocomplete="off" style="flex:1"><button class="btn" type="submit">بپرس</button></form>
+  return `${topBar("بپرس")}<form class="row" id="af"><input id="aq" class="input" value="${esc(state.q)}" placeholder="سؤالت رو بنویس…" autocomplete="off" style="flex:1"><button class="btn" type="submit">بپرس</button></form>
     <div class="chips" style="margin-top:10px">${KB.slice(0, 6).map((x) => `<button class="chip" type="button" data-q="${esc(x.q)}">${esc(x.q)}</button>`).join("")}</div>
     <div class="stack" style="margin-top:12px">${state.q ? (res.length ? res.map((x) => `<div class="glass" style="padding:14px 16px"><b>${esc(x.q)}</b><div style="margin-top:4px">${esc(x.a)}</div><div class="hint" style="margin-top:6px">منبع: ${esc(x.src)}</div></div>`).join("") : `<div class="glass" style="padding:14px 16px">جوابش تو اسناد نیست؛ با دفتر تماس بگیر.</div>`) : ""}
       <div class="glass" style="padding:12px 16px"><div class="row"><span class="hint">تلفن دفتر</span><b class="num" style="margin-inline-start:auto;user-select:all">۰۲۱-۱۲۳۴۵۶۷۸</b><button class="btn soft" type="button" data-copy="02112345678">کپی</button></div>
@@ -377,7 +377,7 @@ function trialDays() {
 }
 function trial() {
   const t = state.trial;
-  return `${top("کلاس آزمایشی")}<div class="glass stack" style="padding:16px"><b>یه جلسه‌ی واقعی، رایگان 🎁</b><span class="hint">برای بزرگسالان، بعد از تعیین سطح</span>
+  return `${topBar("کلاس آزمایشی")}<div class="glass stack" style="padding:16px"><b>یه جلسه‌ی واقعی، رایگان 🎁</b><span class="hint">برای بزرگسالان، بعد از تعیین سطح</span>
     <div><span class="label">روز</span><div class="chips">${trialDays().map((d) => { const k = d.toISOString().slice(0, 10); return `<button class="chip" type="button" data-td="${k}" aria-pressed="${t.date === k}">${faDate(d)}</button>`; }).join("")}</div></div>
     <div><span class="label">ساعت</span><div class="chips">${TIMES.map((x) => `<button class="chip" type="button" data-tt="${x.id}" aria-pressed="${t.time === x.id}">${x.label}</button>`).join("")}</div></div>
     <div class="err" id="e-tr"></div></div>`;
@@ -401,7 +401,7 @@ const digits = (p) => p.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexO
 function readReg() { const r = state.reg; r.name = $("#nm").value.trim(); r.phone = $("#ph").value.trim(); r.course = $("#cs").value; store.set("reg", r); return r; }
 function done(title, sub) {
   haptic("ok");
-  $("#app").innerHTML = `${top(title)}<div class="glass done"><div class="ok">${ICON.check}</div><b style="font-size:18px">${title}</b><div class="hint" style="margin-top:6px">${sub}</div></div>`;
+  $("#app").innerHTML = `${topBar(title)}<div class="glass done"><div class="ok">${ICON.check}</div><b style="font-size:18px">${title}</b><div class="hint" style="margin-top:6px">${sub}</div></div>`;
   // Telegram → app → back to Telegram: the app closes and the chat is there again.
   if (IN_TG) setMain("برگشت به تلگرام", () => tg.close());
   else setMain("صفحه‌ی اصلی", () => go("home"));
