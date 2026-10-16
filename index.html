@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>مینی‌اپ آموزشگاه زبان</title>
+<!-- Telegram Mini App bridge: must load before the app script. -->
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800;900&display=swap">
+<style>
+/* Layout: one small, airy column; four big pastel tiles; everything else lives in sheets. */
+:root {
+  --bg1: #E6F7EF; --bg2: #EEE8FF; --bg3: #FFEFE4;
+  --glass: rgba(255, 255, 255, 0.74); --glass-line: rgba(255, 255, 255, 0.95);
+  --ink: #1E2233; --ink2: #6C7088;
+  --mint: #A9EBCD; --mint-d: #0F7F57;
+  --lilac: #D3C6FF; --lilac-d: #5841C4;
+  --peach: #FFD2BC; --peach-d: #B9512B;
+  --sky: #BCDCFF; --sky-d: #2A6BBE;
+  --brand: #16A06B; --brand-ink: #FFFFFF;
+  --err: #D0453A;
+  --shadow: 0 10px 30px rgba(68, 60, 120, 0.12);
+  --font: "Vazirmatn", "Segoe UI", Tahoma, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg1: #0E1B1C; --bg2: #171430; --bg3: #23170F;
+    --glass: rgba(34, 37, 54, 0.72); --glass-line: rgba(255, 255, 255, 0.08);
+    --ink: #F3F4FA; --ink2: #A2A6BE;
+    --mint: #1F5A44; --mint-d: #8FE9C2; --lilac: #3A2F73; --lilac-d: #CDBFFF;
+    --peach: #5C3020; --peach-d: #FFC2A6; --sky: #1E3A5E; --sky-d: #A9D0FF;
+    --brand: #2FBF85; --err: #FF7A6B; --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg1: #0E1B1C; --bg2: #171430; --bg3: #23170F;
+  --glass: rgba(34, 37, 54, 0.72); --glass-line: rgba(255, 255, 255, 0.08);
+  --ink: #F3F4FA; --ink2: #A2A6BE;
+  --mint: #1F5A44; --mint-d: #8FE9C2; --lilac: #3A2F73; --lilac-d: #CDBFFF;
+  --peach: #5C3020; --peach-d: #FFC2A6; --sky: #1E3A5E; --sky-d: #A9D0FF;
+  --brand: #2FBF85; --err: #FF7A6B; --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0; color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.6; direction: rtl;
+  background: var(--bg1);
+  background-image: radial-gradient(60% 40% at 90% 0%, var(--bg2) 0%, transparent 70%), radial-gradient(70% 45% at 0% 100%, var(--bg3) 0%, transparent 70%);
+  background-attachment: fixed;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-tap-highlight-color: transparent;
+}
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--lilac-d); outline-offset: 2px; }
+.app { max-width: 460px; margin: 0 auto; padding-block: 14px 110px; }
+.glass { background: var(--glass); border: 1px solid var(--glass-line); border-radius: 24px; box-shadow: var(--shadow); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.hint { color: var(--ink2); font-size: 13px; }
+.num { font-variant-numeric: tabular-nums; }
+.ltr { direction: ltr; unicode-bidi: isolate; }
+.stack { display: flex; flex-direction: column; gap: 12px; }
+.row { display: flex; gap: 10px; align-items: center; }
+
+/* top */
+.top { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.top h1 { margin: 0; font-size: 19px; font-weight: 900; flex: 1; min-width: 0; }
+.round { width: 42px; height: 42px; border-radius: 15px; border: 1px solid var(--glass-line); background: var(--glass); display: grid; place-items: center; flex-shrink: 0; box-shadow: var(--shadow); }
+
+/* home */
+.hero { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+.mascot { width: 62px; height: 62px; flex-shrink: 0; transform-origin: 50% 100%; animation: sway 3.2s ease-in-out infinite; }
+@keyframes sway { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
+.hero b { font-size: 19px; font-weight: 900; display: block; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; font-size: 12.5px; font-weight: 800; background: var(--peach); color: var(--peach-d); }
+.tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.tile {
+  border: 0; border-radius: 26px; padding: 16px 14px 14px; text-align: start; display: flex; flex-direction: column; gap: 4px;
+  min-height: 150px; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  transition: transform 0.18s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.tile:active { transform: scale(0.95); }
+.tile svg { width: 58px; height: 58px; margin-bottom: auto; }
+.tile b { font-size: 17px; font-weight: 900; }
+.tile span { font-size: 12.5px; font-weight: 600; opacity: 0.8; }
+/* Solid colour first, for older Telegram Desktop engines without color-mix(). */
+.t-mint { background: var(--mint); background: linear-gradient(150deg, var(--mint), color-mix(in srgb, var(--mint) 55%, white)); color: var(--mint-d); }
+.t-lilac { background: var(--lilac); background: linear-gradient(150deg, var(--lilac), color-mix(in srgb, var(--lilac) 55%, white)); color: var(--lilac-d); }
+.t-peach { background: var(--peach); background: linear-gradient(150deg, var(--peach), color-mix(in srgb, var(--peach) 55%, white)); color: var(--peach-d); }
+.t-sky { background: var(--sky); background: linear-gradient(150deg, var(--sky), color-mix(in srgb, var(--sky) 55%, white)); color: var(--sky-d); }
+:root[data-theme="dark"] .tile, :root:not([data-theme="light"]) .tile { background-blend-mode: normal; }
+.mini { display: flex; gap: 10px; margin-top: 12px; }
+.mini button { flex: 1; border: 1px solid var(--glass-line); background: var(--glass); border-radius: 18px; padding: 12px; font-weight: 800; display: flex; align-items: center; gap: 8px; justify-content: center; box-shadow: var(--shadow); font-size: 13.5px; }
+
+/* lists, chips, forms */
+.item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 0; width: 100%; text-align: start; background: transparent; border-top: 1px solid var(--glass-line); }
+.item:first-child { border-top: 0; }
+.item .dot { width: 38px; height: 38px; border-radius: 13px; display: grid; place-items: center; font-weight: 900; font-size: 13px; flex-shrink: 0; }
+.item b { display: block; font-size: 15px; font-weight: 800; }
+.item .price { margin-inline-start: auto; font-weight: 900; font-size: 13.5px; white-space: nowrap; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1.5px solid var(--glass-line); background: var(--glass); border-radius: 999px; padding: 7px 14px; font-weight: 800; font-size: 13.5px; }
+.chip[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff; }
+.input { width: 100%; border: 1.5px solid var(--glass-line); background: var(--glass); border-radius: 16px; padding: 12px 14px; outline: none; }
+.input:focus { border-color: var(--brand); }
+.label { font-weight: 800; font-size: 13px; margin-bottom: 6px; display: block; }
+.err { color: var(--err); font-size: 12.5px; font-weight: 800; }
+.btn { border: 0; border-radius: 16px; padding: 12px 14px; font-weight: 900; background: var(--brand); color: #fff; }
+.btn.soft { background: var(--glass); color: var(--ink); border: 1px solid var(--glass-line); }
+.big { font-size: 26px; font-weight: 900; }
+
+/* test */
+.bar { height: 8px; border-radius: 4px; background: var(--glass); overflow: hidden; }
+.bar > div { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--brand), var(--lilac-d)); transition: width 0.3s ease; }
+.q { font-size: 20px; font-weight: 800; direction: ltr; text-align: left; padding: 22px 18px; }
+.opt { border: 1.5px solid var(--glass-line); background: var(--glass); border-radius: 18px; padding: 14px 16px; font-weight: 800; direction: ltr; text-align: left; width: 100%; transition: transform 0.15s; }
+.opt:active { transform: scale(0.97); }
+
+/* sheet, main button, toast */
+.mainbar { position: fixed; inset: auto 0 0; z-index: 8; padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.mainbar button { display: block; width: 100%; max-width: 460px; margin: 0 auto; border: 0; border-radius: 18px; padding: 15px; background: var(--brand); color: #fff; font-weight: 900; font-size: 16px; box-shadow: 0 10px 24px rgba(22, 160, 107, 0.35); }
+.sheet-wrap { position: fixed; inset: 0; z-index: 20; background: rgba(20, 18, 40, 0.35); display: flex; align-items: flex-end; justify-content: center; }
+.sheet { width: 100%; max-width: 500px; max-height: 90%; overflow: auto; background: var(--bg1); border-radius: 28px 28px 0 0; padding: 10px 18px calc(20px + env(safe-area-inset-bottom, 0px)); animation: up 0.28s cubic-bezier(0.2, 0.9, 0.3, 1); }
+@keyframes up { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+.grab { width: 44px; height: 5px; border-radius: 3px; background: var(--ink2); opacity: 0.3; margin: 2px auto 12px; }
+.toast { position: fixed; inset-inline: 16px; bottom: calc(88px + env(safe-area-inset-bottom, 0px)); z-index: 30; max-width: 428px; margin: 0 auto; background: #1E2233; color: #fff; border-radius: 16px; padding: 12px 14px; font-size: 13.5px; font-weight: 700; }
+.done { text-align: center; padding: 28px 18px; }
+.done .ok { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 12px; background: var(--brand); animation: pop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1); }
+@keyframes pop { from { transform: scale(0.3); } to { transform: scale(1); } }
+.ribbon { max-width: 460px; margin: 10px auto 0; text-align: center; font-size: 12px; font-weight: 800; color: var(--lilac-d); }
+@media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
+</style>
+
+<div class="ribbon">نسخه‌ی آزمایشی · اطلاعات نمونه</div>
+<div class="app" id="app"></div>
+<div id="mainbar"></div>
+<div id="overlay"></div>
+
+<script>
+/* ── Telegram bridge: real calls inside Telegram, friendly stand-ins in a browser ── */
+const tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
+if (tg) { tg.ready(); tg.expand(); try { tg.disableVerticalSwipes(); } catch (e) {} }
+const IN_TG = Boolean(tg && tg.initData);
+/* Preview: forms show their success screen but send nothing to the bot yet. */
+const PREVIEW = true;
+/* sendData only works when the app was opened from a keyboard button (no query_id then). */
+const CAN_SEND = !PREVIEW && IN_TG && typeof tg.sendData === "function" && !(tg.initDataUnsafe && tg.initDataUnsafe.query_id);
+const haptic = (k) => { try { k === "ok" ? tg.HapticFeedback.notificationOccurred("success") : tg.HapticFeedback.impactOccurred(k || "light"); } catch (e) {} };
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem("zaban:" + k)); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem("zaban:" + k, JSON.stringify(v)); } catch (e) {} try { tg && tg.CloudStorage && tg.CloudStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+};
+const firstName = () => (tg && tg.initDataUnsafe && tg.initDataUnsafe.user && tg.initDataUnsafe.user.first_name) || "";
+
+/* ── helpers ── */
+const $ = (s) => document.querySelector(s);
+const fa = (v) => String(v).replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[d]);
+const money = (n) => Math.round(n / 1000) * 1000;
+const toman = (n) => money(n).toLocaleString("fa-IR");
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+const faDate = (d) => new Intl.DateTimeFormat("fa-IR-u-ca-persian", { weekday: "long", day: "numeric", month: "long" }).format(d);
+const DAY = 86400000;
+const left = (end) => Math.ceil((end - Date.now()) / DAY);
+
+/* ── cute two-tone icons ── */
+const ICON = {
+  book: `<svg viewBox="0 0 64 64"><rect x="10" y="12" width="40" height="44" rx="8" fill="currentColor" opacity=".9"/><rect x="16" y="8" width="38" height="44" rx="8" fill="#fff"/><rect x="22" y="18" width="24" height="4" rx="2" fill="currentColor" opacity=".5"/><rect x="22" y="27" width="18" height="4" rx="2" fill="currentColor" opacity=".35"/><path d="M42 8v16l-4-3-4 3V8z" fill="currentColor"/></svg>`,
+  target: `<svg viewBox="0 0 64 64"><circle cx="30" cy="34" r="22" fill="#fff"/><circle cx="30" cy="34" r="15" fill="currentColor" opacity=".35"/><circle cx="30" cy="34" r="7" fill="currentColor"/><path d="M31 33 52 12" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M48 8l6 2-2 6-5-3z" fill="currentColor"/></svg>`,
+  pen: `<svg viewBox="0 0 64 64"><rect x="12" y="10" width="34" height="44" rx="8" fill="#fff"/><rect x="18" y="20" width="20" height="4" rx="2" fill="currentColor" opacity=".45"/><rect x="18" y="29" width="14" height="4" rx="2" fill="currentColor" opacity=".3"/><path d="M34 46 52 22l6 5-18 24-8 2z" fill="currentColor"/><circle cx="18" cy="44" r="4" fill="currentColor" opacity=".5"/></svg>`,
+  chat: `<svg viewBox="0 0 64 64"><path d="M10 28c0-10 9-17 21-17s21 7 21 17-9 17-21 17c-3 0-6-.4-8-1.2L12 49l3-9c-3-3-5-7-5-12z" fill="#fff"/><circle cx="22" cy="28" r="3.5" fill="currentColor"/><circle cx="31" cy="28" r="3.5" fill="currentColor" opacity=".7"/><circle cx="40" cy="28" r="3.5" fill="currentColor" opacity=".45"/><path d="M44 40c6 0 10 3 10 7l-1 6-6-3h-3c-6 0-10-3-10-7" fill="currentColor" opacity=".6"/></svg>`,
+  gift: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></svg>`,
+  phone: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>`,
+  back: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>`,
+  check: `<svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>`,
+  mascot: `<svg class="mascot" viewBox="0 0 64 64"><path d="M32 34C32 20 22 14 12 16c0 10 8 18 20 18z" fill="#6FD3A3"/><path d="M32 34c0-12 9-18 20-17 0 10-8 17-20 17z" fill="#9BE7C3"/><path d="M32 34v6" stroke="#3FA878" stroke-width="3" stroke-linecap="round"/><ellipse cx="32" cy="50" rx="17" ry="12" fill="#FFD2BC"/><circle cx="26" cy="49" r="2.4" fill="#1E2233"/><circle cx="38" cy="49" r="2.4" fill="#1E2233"/><path d="M28 54q4 3 8 0" stroke="#1E2233" stroke-width="2" fill="none" stroke-linecap="round"/><circle cx="22" cy="53" r="2.2" fill="#FF9EB5" opacity=".7"/><circle cx="42" cy="53" r="2.2" fill="#FF9EB5" opacity=".7"/></svg>`,
+};
+
+/* ── academy data (from the bot's knowledge files — sample data) ── */
+const TERM = { deadline: new Date(2026, 9, 22, 23, 59), start: new Date(2026, 9, 24, 9, 0), earlyEnd: new Date(2026, 9, 17, 23, 59) };
+const COURSES = [
+  { id: "adult", name: "عمومی بزرگسالان", fee: 4800000, per: "ترم", info: "۲۰ جلسه‌ی ۹۰ دقیقه‌ای · هفته‌ای ۲ جلسه · American English File", c: "mint" },
+  { id: "kids", name: "کودکان (۷ تا ۱۲ سال)", fee: 3900000, per: "ترم", info: "۱۶ جلسه‌ی ۷۵ دقیقه‌ای · با بازی و داستان · Family and Friends", c: "peach" },
+  { id: "teen", name: "نوجوانان Teen", fee: 3500000, per: "سطح", info: "۲۰ سطح · هر سطح ۱۸ جلسه‌ی ۹۰ دقیقه‌ای · ۱۲ تا ۱۷ سال", c: "lilac", teen: true },
+  { id: "talk", name: "مکالمه‌ی آزاد", fee: 3200000, per: "دوره", info: "۱۲ جلسه‌ی ۹۰ دقیقه‌ای · از سطح Intermediate", c: "sky" },
+  { id: "ielts", name: "آمادگی آیلتس", fee: 9500000, per: "دوره", info: "۲۴ جلسه‌ی ۱۲۰ دقیقه‌ای · ۴ آزمون آزمایشی", c: "lilac" },
+  { id: "toefl", name: "آمادگی تافل", fee: 9800000, per: "دوره", info: "۲۴ جلسه‌ی ۱۲۰ دقیقه‌ای · ۳ آزمون آزمایشی", c: "sky" },
+  { id: "biz", name: "انگلیسی تجاری", fee: 5600000, per: "دوره", info: "۱۶ جلسه‌ی ۹۰ دقیقه‌ای · ایمیل، جلسه، مذاکره", c: "mint" },
+  { id: "private", name: "کلاس خصوصی", fee: 950000, per: "جلسه", info: "یک‌به‌یک، حضوری یا آنلاین · حداقل ۵ جلسه", c: "peach" },
+];
+const DAYS = [{ id: "a", label: "شنبه و دوشنبه" }, { id: "b", label: "یکشنبه و سه‌شنبه" }];
+const TIMES = [{ id: "m", label: "صبح ۹ تا ۱۰:۳۰" }, { id: "e1", label: "عصر ۱۷ تا ۱۸:۳۰" }, { id: "e2", label: "عصر ۱۸:۴۵ تا ۲۰:۱۵" }];
+const KB = [
+  { q: "شهریه‌ها چقدره؟", a: "عمومی بزرگسالان ۴٫۸ میلیون، کودکان ۳٫۹، مکالمه ۳٫۲، آیلتس ۹٫۵، تافل ۹٫۸، تجاری ۵٫۶ میلیون تومان؛ Teen از ۳٫۵ تا ۵٫۴ و خصوصی هر جلسه ۹۵۰ هزار. کتاب جداست.", src: "دوره‌ها و شهریه", k: "شهریه قیمت هزینه چقدر آیلتس تافل" },
+  { q: "کلاس آنلاین دارید؟", a: "بله، زنده در Google Meet، با فایل ضبط‌شده تا آخر ترم. شهریه‌ی آنلاین ۱۰٪ کمتره.", src: "سوالات متداول", k: "آنلاین گوگل میت ضبط" },
+  { q: "قسطی می‌شه؟", a: "دوره‌های بالای ۵ میلیون: ۶۰٪ موقع ثبت‌نام، ۴۰٪ تا جلسه‌ی ششم.", src: "قوانین و مقررات", k: "قسط قسطی اقساط" },
+  { q: "انصراف بدم پول برمی‌گرده؟", a: "قبل از جلسه‌ی اول ۹۰٪، تا قبل از جلسه‌ی سوم ۵۰٪، بعدش نه. واریز ظرف ۷ روز کاری.", src: "قوانین و مقررات", k: "انصراف بازگشت برگشت پول لغو" },
+  { q: "غیبت و جبرانی؟", a: "حداکثر ۳ غیبت در ترم. برای غیبت خودت جبرانی نیست؛ فقط کلاس‌های لغوشده از طرف آموزشگاه جبران می‌شن.", src: "قوانین و مقررات", k: "غیبت جبرانی تاخیر" },
+  { q: "چه مدارکی لازمه؟", a: "کارت ملی (زیر ۱۸ سال شناسنامه) و یک قطعه عکس. به‌جز Starter، تعیین سطح لازمه.", src: "قوانین و مقررات", k: "مدارک کارت ملی شناسنامه عکس" },
+  { q: "کلاس آزمایشی رایگان دارید؟", a: "بله، برای بزرگسالان بعد از تعیین سطح، یه جلسه رایگان.", src: "سوالات متداول", k: "آزمایشی رایگان" },
+  { q: "ترم کی شروع می‌شه؟", a: "ترم پاییز شنبه ۲ آبان؛ مهلت ثبت‌نام تا پنجشنبه ۳۰ مهر.", src: "دوره‌ها و شهریه", k: "شروع ترم مهلت کی" },
+  { q: "ساعت کاری دفتر؟", a: "شنبه تا چهارشنبه ۹ تا ۲۰، پنجشنبه ۹ تا ۱۴. نشانی: خیابان نمونه، پلاک ۱۲.", src: "قوانین و مقررات", k: "ساعت کاری آدرس نشانی دفتر" },
+  { q: "زیر ۷ سال کلاس دارید؟", a: "فعلاً نه؛ کلاس کودکان از ۷ سالگیه.", src: "سوالات متداول", k: "زیر ۷ خردسال" },
+];
+const QUIZ = [
+  { q: "My sister ___ a teacher.", o: ["am", "is", "are", "be"], a: 1 },
+  { q: "There ___ two books on the table.", o: ["is", "be", "are", "has"], a: 2 },
+  { q: "She ___ TV when I called her.", o: ["watched", "was watching", "is watching", "watches"], a: 1 },
+  { q: "Have you ever ___ to Shiraz?", o: ["go", "went", "gone", "been"], a: 3 },
+  { q: "If it ___ tomorrow, we'll stay home.", o: ["rains", "will rain", "rained", "raining"], a: 0 },
+  { q: "I'm not used ___ up so early.", o: ["get", "to get", "to getting", "getting"], a: 2 },
+  { q: "She suggested ___ a taxi.", o: ["to take", "taking", "take", "took"], a: 1 },
+  { q: "Had I known, I ___ earlier.", o: ["would leave", "would have left", "will leave", "left"], a: 1 },
+];
+const LEVELS = [
+  { min: 0, name: "Starter", cefr: "A1" }, { min: 2, name: "Elementary", cefr: "A1+" }, { min: 3, name: "Pre-Intermediate", cefr: "A2" },
+  { min: 4, name: "Intermediate", cefr: "B1" }, { min: 6, name: "Upper-Intermediate", cefr: "B2" }, { min: 7, name: "Advanced 1", cefr: "C1" }, { min: 8, name: "Advanced 2", cefr: "C1+" },
+];
+const levelFor = (s) => LEVELS.reduce((l, x) => (s >= x.min ? x : l), LEVELS[0]);
+
+/* ── state + router ── */
+const state = {
+  reg: store.get("reg") || { name: "", phone: "", course: "adult", day: "", time: "", mode: "in" },
+  calc: { mode: "in", sibling: false, two: false, teen: 1, sessions: 5 },
+  test: store.get("test") || { who: "", i: 0, ans: [] },
+  trial: { date: "", time: "" },
+  q: "",
+};
+const ROUTES = ["home", "courses", "test", "register", "ask", "trial"];
+const route = () => { const r = (location.hash || "#home").slice(1); return ROUTES.includes(r) ? r : "home"; };
+const go = (r) => { haptic("light"); location.hash === "#" + r ? render() : (location.hash = r); };
+const onBack = () => (history.length > 1 ? history.back() : go("home"));
+if (tg && tg.BackButton) tg.BackButton.onClick(onBack);
+window.addEventListener("hashchange", () => { closeSheet(); render(); window.scrollTo(0, 0); });
+
+function toast(t) { const el = document.createElement("div"); el.className = "toast"; el.setAttribute("role", "status"); el.textContent = t; document.body.appendChild(el); setTimeout(() => el.remove(), 3200); }
+function setMain(text, fn) {
+  if (tg && tg.MainButton) {
+    if (setMain.h) tg.MainButton.offClick(setMain.h);
+    if (!text) { tg.MainButton.hide(); return; }
+    setMain.h = () => { haptic("medium"); fn(); };
+    tg.MainButton.setParams({ text, color: getComputedStyle(document.documentElement).getPropertyValue("--brand").trim() || "#16A06B", text_color: "#ffffff", is_visible: true });
+    tg.MainButton.onClick(setMain.h);
+    return;
+  }
+  $("#mainbar").innerHTML = text ? `<div class="mainbar"><button id="mb" type="button">${esc(text)}</button></div>` : "";
+  if (text) $("#mb").onclick = () => { haptic("medium"); fn(); };
+}
+function sheet(html) {
+  $("#overlay").innerHTML = `<div class="sheet-wrap" id="sw"><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div></div>`;
+  $("#sw").onclick = (e) => { if (e.target.id === "sw") closeSheet(); };
+}
+function closeSheet() { $("#overlay").innerHTML = ""; }
+function top(title) {
+  if (tg && tg.BackButton) title ? tg.BackButton.show() : tg.BackButton.hide();
+  return `<div class="top">${title ? `<button class="round" type="button" data-act="back" aria-label="برگشت">${ICON.back}</button>` : ""}<h1>${title || "آموزشگاه زبان شما"}</h1>
+    ${title ? "" : `<button class="round" type="button" data-act="homescreen" aria-label="آیکون روی صفحه‌ی گوشی">${ICON.phone}</button>`}</div>`;
+}
+
+/* ── pages ── */
+function home() {
+  const n = firstName();
+  const dl = left(TERM.deadline);
+  return `${top("")}
+    <div class="glass hero">${ICON.mascot}<div><b>سلام${n ? " " + esc(n) : ""}!</b><span class="hint">زبان یاد بگیریم؟</span>
+      ${dl >= 0 ? `<div style="margin-top:6px"><span class="pill num">${fa(dl)} روز تا پایان ثبت‌نام</span></div>` : ""}</div></div>
+    <div class="tiles">
+      <button class="tile t-mint" type="button" data-go="courses">${ICON.book}<b>دوره‌ها</b><span>شهریه و سانس</span></button>
+      <button class="tile t-lilac" type="button" data-go="test">${ICON.target}<b>تعیین سطح</b><span>۲ دقیقه</span></button>
+      <button class="tile t-peach" type="button" data-go="register">${ICON.pen}<b>ثبت‌نام</b><span>۳۰ ثانیه</span></button>
+      <button class="tile t-sky" type="button" data-go="ask">${ICON.chat}<b>بپرس</b><span>جواب فوری</span></button>
+    </div>
+    <div class="mini"><button type="button" data-go="trial">${ICON.gift} کلاس آزمایشی رایگان</button></div>`;
+}
+function courses() {
+  return `${top("دوره‌ها")}<div class="glass">${COURSES.map((c) => `<button class="item" type="button" data-course="${c.id}">
+      <div class="dot t-${c.c}">${c.name.slice(0, 1)}</div><div><b>${c.name}</b><span class="hint">${c.per === "جلسه" ? "هر جلسه" : "هر " + c.per}</span></div>
+      <span class="price num">${c.teen ? "از " : ""}${toman(c.fee)}</span></button>`).join("")}</div>
+    <div class="hint" style="text-align:center;margin-top:10px">مبلغ‌ها به تومان · کتاب جداست</div>`;
+}
+function quote(c) {
+  const s = state.calc;
+  let unit = c.teen ? 3500000 + (s.teen - 1) * 100000 : c.fee;
+  if (s.mode === "on") unit *= 0.9;
+  const units = c.id === "private" ? Math.max(5, s.sessions) : 1;
+  const terms = s.two && c.id !== "private" ? 2 : 1;
+  const gross = unit * units * terms;
+  const opts = [];
+  if (left(TERM.earlyEnd) >= 0) opts.push({ t: "زودهنگام ۱۰٪", v: gross * 0.1 });
+  if (s.sibling) opts.push({ t: "خواهر/برادر ۱۰٪", v: gross * 0.1 });
+  if (terms === 2) opts.push({ t: "ترم دوم ۱۵٪", v: unit * units * 0.15 });
+  opts.sort((a, b) => b.v - a.v);
+  const off = opts[0];
+  const total = gross - (off ? off.v : 0);
+  return { gross, off, total, perTerm: total / terms };
+}
+let lastSheet = "";
+const currentSheet = () => lastSheet;
+function courseSheet(id) {
+  lastSheet = id;
+  const c = COURSES.find((x) => x.id === id);
+  const s = state.calc;
+  const q = quote(c);
+  sheet(`<div class="row" style="align-items:flex-start"><div class="dot t-${c.c}" style="width:46px;height:46px;border-radius:15px;display:grid;place-items:center;font-weight:900">${c.name.slice(0, 1)}</div>
+      <div style="flex:1"><b style="font-size:18px">${c.name}</b><div class="hint">${c.info}</div></div></div>
+    <div class="stack" style="margin-top:14px">
+      ${c.teen ? `<div><span class="label">سطح</span><div class="row"><button class="btn soft" type="button" data-teen="-1">−</button><b class="num" style="flex:1;text-align:center">Teen ${s.teen}</b><button class="btn soft" type="button" data-teen="1">+</button></div></div>` : ""}
+      ${c.id === "private" ? `<div><span class="label">تعداد جلسه</span><div class="row"><button class="btn soft" type="button" data-ses="-1">−</button><b class="num" style="flex:1;text-align:center">${fa(Math.max(5, s.sessions))} جلسه</b><button class="btn soft" type="button" data-ses="1">+</button></div></div>` : ""}
+      <div class="chips"><button class="chip" type="button" data-cm="in" aria-pressed="${s.mode === "in"}">حضوری</button><button class="chip" type="button" data-cm="on" aria-pressed="${s.mode === "on"}">آنلاین −۱۰٪</button>
+        <button class="chip" type="button" data-cx="sibling" aria-pressed="${s.sibling}">خواهر/برادر</button>${c.id !== "private" ? `<button class="chip" type="button" data-cx="two" aria-pressed="${s.two}">دو ترم</button>` : ""}</div>
+      <div class="glass" style="padding:14px 16px"><div class="row"><span class="hint">مبلغ نهایی</span><span style="margin-inline-start:auto" class="big num">${toman(q.total)}</span></div>
+        <div class="hint">${q.off ? `تخفیف «${q.off.t}» حساب شد${q.gross !== q.total ? ` (به‌جای ${toman(q.gross)})` : ""}.` : "بدون تخفیف."} تومان · کتاب جدا</div>
+        ${q.perTerm > 5000000 ? `<div class="hint" style="margin-top:4px">قسطی: ${toman(q.perTerm * 0.6)} حالا، ${toman(q.perTerm * 0.4)} تا جلسه‌ی ششم</div>` : ""}</div>
+      <button class="btn" type="button" data-reg="${c.id}" style="padding:14px">ثبت‌نام همین دوره</button>
+    </div>`);
+}
+function testPage() {
+  const t = state.test;
+  if (t.done) return result();
+  if (!t.who) {
+    return `${top("تعیین سطح")}<div class="glass" style="padding:16px"><b>۸ سؤال، ۲ دقیقه</b><div class="hint">یه تخمین سریع؛ آزمون اصلی رایگانه و مصاحبه‌ی شفاهی هم داره.</div></div>
+      <div class="tiles"><button class="tile t-peach" type="button" data-who="kid" style="min-height:110px"><b>کودک</b><span>۷ تا ۱۲</span></button>
+      <button class="tile t-lilac" type="button" data-who="teen" style="min-height:110px"><b>نوجوان</b><span>۱۲ تا ۱۷</span></button>
+      <button class="tile t-mint" type="button" data-who="adult" style="grid-column:1/-1;min-height:84px"><b>بزرگسال</b><span>۱۷ سال به بالا</span></button></div>`;
+  }
+  if (t.who === "kid") {
+    return `${top("تعیین سطح")}<div class="glass done"><div class="ok">${ICON.check}</div><b style="font-size:18px">دوره‌ی کودکان مناسبه</b><div class="hint">با بازی، داستان و آهنگ · حداکثر ۸ نفر</div>
+      <div class="row" style="margin-top:14px"><button class="btn soft" type="button" data-act="retest" style="flex:1">برگشت</button><button class="btn" type="button" data-reg="kids" style="flex:1">ثبت‌نام</button></div></div>`;
+  }
+  const q = QUIZ[t.i];
+  return `${top("تعیین سطح")}<div class="row"><div class="bar" style="flex:1"><div style="width:${(t.i / QUIZ.length) * 100}%"></div></div><span class="hint num">${fa(t.i + 1)}/${fa(QUIZ.length)}</span></div>
+    <div class="glass q" style="margin-top:12px">${esc(q.q)}</div>
+    <div class="stack" style="margin-top:12px">${q.o.map((o, k) => `<button class="opt" type="button" data-ans="${k}">${esc(o)}</button>`).join("")}</div>`;
+}
+function result() {
+  const t = state.test;
+  const teen = t.who === "teen" ? Math.min(20, Math.max(1, Math.round(1 + (t.score * 19) / QUIZ.length))) : 0;
+  const r = 38, C = 2 * Math.PI * r;
+  return `${top("نتیجه")}<div class="glass" style="padding:18px;display:flex;gap:16px;align-items:center">
+      <svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--glass-line)" stroke-width="10"/><circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--brand)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(C * t.score) / QUIZ.length} ${C}" transform="rotate(-90 46 46)"/>
+        <text x="46" y="52" text-anchor="middle" font-size="19" font-weight="900" fill="var(--ink)" font-family="Vazirmatn">${fa(t.score)}/${fa(QUIZ.length)}</text></svg>
+      <div><span class="hint">سطح تو</span><div class="big ltr" style="color:var(--brand)">${esc(teen ? "Teen " + teen : t.level)}</div><span class="pill ltr" style="background:var(--lilac);color:var(--lilac-d)">CEFR ${esc(t.cefr)}</span></div></div>
+    <div class="stack" style="margin-top:12px">
+      <button class="btn" type="button" data-reg="${teen ? "teen" : "adult"}" ${teen ? `data-tl="${teen}"` : ""} style="padding:14px">ثبت‌نام تو همین سطح</button>
+      ${t.who === "adult" ? `<button class="btn soft" type="button" data-go="trial">${"کلاس آزمایشی رایگان"}</button>` : ""}
+      <button class="btn soft" type="button" data-act="story">اشتراک تو استوری تلگرام</button>
+      <button class="btn soft" type="button" data-act="retest">دوباره</button></div>`;
+}
+function register() {
+  const r = state.reg;
+  return `${top("ثبت‌نام")}<div class="glass stack" style="padding:16px">
+    <div><label class="label" for="nm">نام و نام خانوادگی</label><input id="nm" class="input" autocomplete="name" value="${esc(r.name)}" placeholder="سارا رضایی"><div class="err" id="e-nm"></div></div>
+    <div><label class="label" for="ph">موبایل</label><div class="row"><input id="ph" class="input num" inputmode="tel" value="${esc(r.phone)}" placeholder="۰۹۱۲۳۴۵۶۷۸۹" style="flex:1"><button class="btn soft" type="button" data-act="contact" style="white-space:nowrap">با یه لمس</button></div><div class="err" id="e-ph"></div></div>
+    <div><label class="label" for="cs">دوره</label><select id="cs" class="input">${COURSES.map((c) => `<option value="${c.id}" ${r.course === c.id ? "selected" : ""}>${c.name}</option>`).join("")}</select></div>
+    <div><span class="label">روز</span><div class="chips">${DAYS.map((d) => `<button class="chip" type="button" data-day="${d.id}" aria-pressed="${r.day === d.id}">${d.label}</button>`).join("")}</div></div>
+    <div><span class="label">ساعت</span><div class="chips">${TIMES.map((x) => `<button class="chip" type="button" data-time="${x.id}" aria-pressed="${r.time === x.id}">${x.label}</button>`).join("")}</div></div>
+    <div class="chips"><button class="chip" type="button" data-rm="in" aria-pressed="${r.mode === "in"}">حضوری</button><button class="chip" type="button" data-rm="on" aria-pressed="${r.mode === "on"}">آنلاین</button></div>
+  </div>`;
+}
+function ask() {
+  const res = state.q ? search(state.q) : [];
+  return `${top("بپرس")}<form class="row" id="af"><input id="aq" class="input" value="${esc(state.q)}" placeholder="سؤالت رو بنویس…" autocomplete="off" style="flex:1"><button class="btn" type="submit">بپرس</button></form>
+    <div class="chips" style="margin-top:10px">${KB.slice(0, 6).map((x) => `<button class="chip" type="button" data-q="${esc(x.q)}">${esc(x.q)}</button>`).join("")}</div>
+    <div class="stack" style="margin-top:12px">${state.q ? (res.length ? res.map((x) => `<div class="glass" style="padding:14px 16px"><b>${esc(x.q)}</b><div style="margin-top:4px">${esc(x.a)}</div><div class="hint" style="margin-top:6px">منبع: ${esc(x.src)}</div></div>`).join("") : `<div class="glass" style="padding:14px 16px">جوابش تو اسناد نیست؛ با دفتر تماس بگیر.</div>`) : ""}
+      <div class="glass" style="padding:12px 16px"><div class="row"><span class="hint">تلفن دفتر</span><b class="num" style="margin-inline-start:auto;user-select:all">۰۲۱-۱۲۳۴۵۶۷۸</b><button class="btn soft" type="button" data-copy="02112345678">کپی</button></div>
+        <div class="hint" style="margin-top:6px">خیابان نمونه، پلاک ۱۲ · شنبه تا چهارشنبه ۹ تا ۲۰</div></div></div>`;
+}
+function trialDays() {
+  const out = []; const d = new Date(); d.setHours(12, 0, 0, 0);
+  while (out.length < 5) { d.setTime(d.getTime() + DAY); if (d.getDay() !== 4 && d.getDay() !== 5) out.push(new Date(d)); }
+  return out;
+}
+function trial() {
+  const t = state.trial;
+  return `${top("کلاس آزمایشی")}<div class="glass stack" style="padding:16px"><b>یه جلسه‌ی واقعی، رایگان 🎁</b><span class="hint">برای بزرگسالان، بعد از تعیین سطح</span>
+    <div><span class="label">روز</span><div class="chips">${trialDays().map((d) => { const k = d.toISOString().slice(0, 10); return `<button class="chip" type="button" data-td="${k}" aria-pressed="${t.date === k}">${faDate(d)}</button>`; }).join("")}</div></div>
+    <div><span class="label">ساعت</span><div class="chips">${TIMES.map((x) => `<button class="chip" type="button" data-tt="${x.id}" aria-pressed="${t.time === x.id}">${x.label}</button>`).join("")}</div></div>
+    <div class="err" id="e-tr"></div></div>`;
+}
+function search(q) {
+  const w = q.replace(/[؟?!.،,]/g, " ").split(/\s+/).filter((x) => x.length > 1);
+  return KB.map((it) => ({ it, s: w.reduce((n, x) => n + ((it.q + " " + it.k).includes(x) ? 2 : it.a.includes(x) ? 1 : 0), 0) }))
+    .filter((x) => x.s > 0).sort((a, b) => b.s - a.s).slice(0, 2).map((x) => x.it);
+}
+
+/* ── render + actions ── */
+function render() {
+  const r = route();
+  $("#app").innerHTML = { home, courses, test: testPage, register, ask, trial }[r]();
+  setMain("", null);
+  if (r === "register") setMain("ثبت‌نام", submitReg);
+  if (r === "trial") setMain("رزرو کلاس آزمایشی", submitTrial);
+  if (r === "ask") $("#af").onsubmit = (e) => { e.preventDefault(); state.q = $("#aq").value.trim(); render(); };
+}
+const digits = (p) => p.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/\D/g, "").replace(/^98/, "0");
+function readReg() { const r = state.reg; r.name = $("#nm").value.trim(); r.phone = $("#ph").value.trim(); r.course = $("#cs").value; store.set("reg", r); return r; }
+function done(title, sub) {
+  haptic("ok");
+  $("#app").innerHTML = `${top(title)}<div class="glass done"><div class="ok">${ICON.check}</div><b style="font-size:18px">${title}</b><div class="hint" style="margin-top:6px">${sub}</div></div>`;
+  // Telegram → app → back to Telegram: the app closes and the chat is there again.
+  if (IN_TG) setMain("برگشت به تلگرام", () => tg.close());
+  else setMain("صفحه‌ی اصلی", () => go("home"));
+}
+function submitReg() {
+  const r = readReg(); let ok = true;
+  $("#e-nm").textContent = ""; $("#e-ph").textContent = "";
+  if (r.name.split(/\s+/).length < 2) { $("#e-nm").textContent = "اسم و فامیل رو با هم بنویس."; ok = false; }
+  if (!/^09\d{9}$/.test(digits(r.phone))) { $("#e-ph").textContent = "موبایل ۱۱ رقمیه و با ۰۹ شروع می‌شه."; ok = false; }
+  if (!ok) { haptic("heavy"); return; }
+  if (CAN_SEND) { try { tg.sendData(JSON.stringify({ type: "register", ...r, phone: digits(r.phone) })); return; } catch (e) {} }
+  done("ثبت شد!", `${esc(r.name)}، همکاران آموزشگاه به‌زودی تماس می‌گیرن.${PREVIEW ? "<br>(نسخه‌ی آزمایشی: هنوز برای مدیر ارسال نمی‌شه)" : ""}`);
+}
+function submitTrial() {
+  const t = state.trial;
+  if (!t.date || !t.time) { $("#e-tr").textContent = "روز و ساعت رو انتخاب کن."; haptic("heavy"); return; }
+  if (!state.reg.name || !state.reg.phone) { toast("یه بار اسم و شماره‌ت رو تو ثبت‌نام بنویس؛ بعد رزرو با یه لمسه."); go("register"); return; }
+  if (CAN_SEND) { try { tg.sendData(JSON.stringify({ type: "trial", ...t, name: state.reg.name, phone: digits(state.reg.phone) })); return; } catch (e) {} }
+  done("رزرو شد!", `${faDate(new Date(t.date + "T12:00:00"))} · ${TIMES.find((x) => x.id === t.time).label}<br>یه روز قبلش یادآوری می‌کنیم.`);
+}
+async function story() {
+  const t = state.test;
+  const cv = document.createElement("canvas"); cv.width = 540; cv.height = 960; const g = cv.getContext("2d");
+  try { await document.fonts.load("900 60px Vazirmatn"); } catch (e) {}
+  const grd = g.createLinearGradient(0, 0, 540, 960); grd.addColorStop(0, "#C9F2DE"); grd.addColorStop(0.55, "#E2D9FF"); grd.addColorStop(1, "#FFDCCB");
+  g.fillStyle = grd; g.fillRect(0, 0, 540, 960);
+  g.fillStyle = "rgba(255,255,255,0.6)"; g.beginPath();
+  if (g.roundRect) g.roundRect(50, 250, 440, 440, 48); else g.rect(50, 250, 440, 440);
+  g.fill();
+  g.textAlign = "center"; g.fillStyle = "#1E2233";
+  g.direction = "rtl"; g.font = "800 32px Vazirmatn"; g.fillText("سطح زبان من", 270, 340);
+  g.direction = "ltr"; g.font = "900 62px Vazirmatn"; g.fillStyle = "#16A06B"; g.fillText(t.level || "Intermediate", 270, 440);
+  g.fillStyle = "#5841C4"; g.font = "800 30px Vazirmatn"; g.fillText("CEFR " + (t.cefr || "B1"), 270, 495);
+  g.direction = "rtl"; g.fillStyle = "#1E2233"; g.font = "900 36px Vazirmatn"; g.fillText("آموزشگاه زبان شما", 270, 620);
+  g.font = "700 26px Vazirmatn"; g.fillStyle = "#6C7088"; g.fillText("تو هم سطحت رو بسنج", 270, 820);
+  sheet(`<b style="font-size:17px">استوری تو</b><div class="hint">داخل تلگرام با یه لمس تو استوری‌ت می‌ره، با لینک اپ.</div>
+    <img src="${cv.toDataURL("image/png")}" alt="کارت استوری سطح زبان" style="display:block;width:58%;margin:14px auto;border-radius:20px;box-shadow:var(--shadow)">
+    <button class="btn" type="button" data-act="close" style="width:100%">باشه</button>`);
+}
+
+document.addEventListener("click", async (e) => {
+  const el = e.target.closest("button"); if (!el) return;
+  const d = el.dataset;
+  if (d.go) return go(d.go);
+  if (d.act === "back") return onBack();
+  if (d.act === "close") return closeSheet();
+  if (d.course) { haptic("light"); return courseSheet(d.course); }
+  if (d.cm) { state.calc.mode = d.cm; haptic("light"); return courseSheet(currentSheet()); }
+  if (d.cx) { state.calc[d.cx] = !state.calc[d.cx]; haptic("light"); return courseSheet(currentSheet()); }
+  if (d.teen) { state.calc.teen = Math.min(20, Math.max(1, state.calc.teen + Number(d.teen))); haptic("light"); return courseSheet("teen"); }
+  if (d.ses) { state.calc.sessions = Math.min(40, Math.max(5, state.calc.sessions + Number(d.ses))); haptic("light"); return courseSheet("private"); }
+  if (d.reg) { state.reg.course = d.reg; if (d.tl) state.calc.teen = Number(d.tl); state.reg.mode = state.calc.mode; store.set("reg", state.reg); return go("register"); }
+  if (d.day || d.time || d.rm) { readReg(); if (d.day) state.reg.day = d.day; if (d.time) state.reg.time = d.time; if (d.rm) state.reg.mode = d.rm; store.set("reg", state.reg); haptic("light"); return render(); }
+  if (d.td) { state.trial.date = d.td; haptic("light"); return render(); }
+  if (d.tt) { state.trial.time = d.tt; haptic("light"); return render(); }
+  if (d.who) { state.test = { who: d.who, i: 0, ans: [] }; store.set("test", state.test); haptic("light"); return render(); }
+  if (d.ans !== undefined) {
+    const t = state.test; t.ans[t.i] = Number(d.ans); t.i += 1; haptic("light");
+    if (t.i >= QUIZ.length) { t.score = QUIZ.reduce((s, q, i) => s + (t.ans[i] === q.a ? 1 : 0), 0); const l = levelFor(t.score); t.level = l.name; t.cefr = l.cefr; t.done = true; haptic("ok"); }
+    store.set("test", t); return render();
+  }
+  if (d.q) { state.q = d.q; return render(); }
+  if (d.copy) { try { await navigator.clipboard.writeText(d.copy); toast("کپی شد"); } catch (err) { toast(fa(d.copy)); } return; }
+  switch (d.act) {
+    case "contact":
+      if (IN_TG && tg.requestContact) tg.requestContact((ok, res) => { const p = ok && res && res.responseUnsafe && res.responseUnsafe.contact && res.responseUnsafe.contact.phone_number; if (p) { $("#ph").value = p; haptic("ok"); } });
+      else { $("#ph").value = "09123456789"; toast("داخل تلگرام شماره‌ی خودت با یه لمس میاد (نمونه پر شد)."); }
+      return;
+    case "homescreen": if (IN_TG && tg.addToHomeScreen) tg.addToHomeScreen(); else toast("داخل تلگرام، آیکون آموزشگاه روی صفحه‌ی گوشی میاد."); return;
+    case "retest": state.test = { who: "", i: 0, ans: [] }; store.set("test", state.test); return render();
+    case "story": return story();
+  }
+});
+/* Inside Telegram: follow the user's theme. */
+if (tg && tg.colorScheme) document.documentElement.dataset.theme = tg.colorScheme === "dark" ? "dark" : "light";
+if (tg) { try { const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg1").trim(); tg.setHeaderColor(bg); tg.setBackgroundColor(bg); } catch (e) {} }
+render();
+</script>
+</body>
+</html>
