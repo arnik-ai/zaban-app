@@ -117,7 +117,25 @@ select.input { appearance: none; -webkit-appearance: none; padding-inline-start:
 .cd { position: relative; aspect-ratio: 1; min-height: 40px; border: 1.5px solid var(--lilac-line); background: #FFFFFF; border-radius: 14px; font-weight: 800; font-size: 15px; display: grid; place-items: center; padding: 0; }
 .cd:disabled { border-color: transparent; background: #F6F5FA; color: #C4C3D2; cursor: default; }
 .cd.on { background: linear-gradient(135deg, var(--brand), var(--brand-2)); border-color: transparent; color: #FFFFFF; transform: scale(1.06); }
-.cd .tk { position: absolute; top: -6px; inset-inline-end: -6px; width: 20px; height: 20px; border-radius: 50%; background: #2DBE8C; border: 2px solid #FFFFFF; display: grid; place-items: center; animation: pop 0.3s cubic-bezier(0.3, 1.6, 0.5, 1); }
+.pats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pat, .slot { position: relative; border: 1.5px solid var(--glass-line); background: #FFFFFF; border-radius: 18px; display: flex; flex-direction: column; align-items: center; transition: transform 0.15s, box-shadow 0.2s; }
+.pat { padding: 13px 8px 12px; gap: 9px; }
+.pat b { font-size: 14px; font-weight: 800; }
+.wk { display: flex; gap: 2px; }
+.wk i { font-style: normal; width: 15px; height: 17px; border-radius: 5px; display: grid; place-items: center; font-size: 9.5px; font-weight: 800; color: #B9B8C8; background: #F4F3F9; }
+.wk i.y { background: var(--lilac-b); color: var(--lilac-d); }
+.slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.slot { padding: 12px 4px 10px; gap: 1px; }
+.slot svg { width: 32px; height: 32px; margin-bottom: 4px; }
+.slot b { font-size: 15px; font-weight: 900; }
+.slot span { font-size: 11.5px; font-weight: 700; color: var(--ink2); white-space: nowrap; }
+.pat.on, .slot.on { border-color: var(--brand); background: var(--lilac-a); box-shadow: 0 6px 16px rgba(124, 92, 240, 0.18); }
+.pat.on .wk i.y { background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #FFFFFF; }
+.slot.on span { color: var(--lilac-d); }
+.pat:active, .slot:active { transform: scale(0.96); }
+.start { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 16px; background: var(--mint-a); border: 1.5px solid var(--mint-line); font-size: 14px; }
+.start svg { width: 24px; height: 24px; flex-shrink: 0; }
+.tk { position: absolute; top: -6px; inset-inline-end: -6px; width: 20px; height: 20px; border-radius: 50%; background: #2DBE8C; border: 2px solid #FFFFFF; display: grid; place-items: center; animation: pop 0.3s cubic-bezier(0.3, 1.6, 0.5, 1); }
 .btn:disabled { opacity: 0.5; }
 
 /* drawers: crowded parts fold away */
@@ -161,7 +179,7 @@ select.input { appearance: none; -webkit-appearance: none; padding-inline-start:
 @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
 </style>
 
-<div class="ribbon">نسخه‌ی آزمایشی ۵ · اطلاعات نمونه</div>
+<div class="ribbon">نسخه‌ی آزمایشی ۶ · اطلاعات نمونه</div>
 <div class="app" id="app"><div class="hint" style="text-align:center;padding:40px 0">در حال باز شدن…</div></div>
 <div id="mainbar"></div>
 <div id="overlay"></div>
@@ -209,6 +227,9 @@ const ICON = {
   chat: `<svg viewBox="0 0 64 64"><defs><linearGradient id="gC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFE59A"/><stop offset="1" stop-color="#FFB224"/></linearGradient></defs><path d="M44 38c6.6 0 12 3.8 12 8.6 0 2.4-1.3 4.6-3.5 6.2L54 58l-5.6-2.7c-1.4.3-2.9.4-4.4.4-6.6 0-12-3.8-12-8.6" fill="#C9B8FF"/><path d="M8 28c0-10 9.8-17.5 22-17.5S52 18 52 28 42.2 45.5 30 45.5c-3 0-5.8-.4-8.4-1.2L11 49l3-8.6C10.2 37.2 8 32.8 8 28z" fill="url(#gC)"/><circle cx="21" cy="28" r="3.3" fill="#fff"/><circle cx="30" cy="28" r="3.3" fill="#fff"/><circle cx="39" cy="28" r="3.3" fill="#fff"/></svg>`,
   gift: `<svg viewBox="0 0 24 24" width="22" height="22"><rect x="3.5" y="10" width="17" height="10.5" rx="2.6" fill="#FFBCD6"/><rect x="2.5" y="6.8" width="19" height="4.6" rx="2" fill="#EE5D97"/><rect x="10.8" y="6.8" width="2.4" height="13.7" fill="#FFD36E"/><path d="M12 6.8C9.6 2.8 5.6 4.4 7.6 6.8M12 6.8c2.4-4 6.4-2.4 4.4 0" fill="none" stroke="#EE5D97" stroke-width="1.8" stroke-linecap="round"/></svg>`,
   cal: `<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="4" fill="#E4DBFF"/><path d="M3 9a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v1H3z" fill="#7C5CF0"/><rect x="7" y="3" width="2.2" height="5" rx="1.1" fill="#3E2E86"/><rect x="14.8" y="3" width="2.2" height="5" rx="1.1" fill="#3E2E86"/><circle cx="12" cy="15.5" r="2.3" fill="#EE5D97"/></svg>`,
+  sun: `<svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="7" fill="#FFC857"/><path d="M16 3v3M16 26v3M3 16h3M26 16h3M6.8 6.8l2.1 2.1M23.1 23.1l2.1 2.1M6.8 25.2l2.1-2.1M23.1 8.9l2.1-2.1" stroke="#FFB224" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+  sunset: `<svg viewBox="0 0 32 32"><path d="M7 22a9 9 0 0 1 18 0z" fill="#FF9EB5"/><path d="M4 22h24M9 26.5h14" stroke="#EE5D97" stroke-width="2.4" stroke-linecap="round"/><path d="M16 5v4M7.5 9.5l2.2 2.2M24.5 9.5l-2.2 2.2" stroke="#FFB224" stroke-width="2.4" stroke-linecap="round"/></svg>`,
+  moon: `<svg viewBox="0 0 32 32"><path d="M20 5a11 11 0 1 0 7 19.5A9.5 9.5 0 0 1 20 5z" fill="#9F86FF"/><circle cx="24.5" cy="8.5" r="1.7" fill="#FFC857"/><circle cx="28" cy="14" r="1.1" fill="#FFC857"/></svg>`,
   tick: `<span class="tk"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>`,
   chev: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>`,
   cap: `<svg viewBox="0 0 24 24"><path d="M12 4 2 9l10 5 10-5z" fill="currentColor"/><path d="M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3z" fill="currentColor" opacity=".55"/></svg>`,
@@ -232,8 +253,17 @@ const COURSES = [
   { id: "biz", name: "انگلیسی تجاری", fee: 5600000, per: "دوره", info: "۱۶ جلسه‌ی ۹۰ دقیقه‌ای · ایمیل، جلسه، مذاکره", c: "mint" },
   { id: "private", name: "کلاس خصوصی", fee: 950000, per: "جلسه", info: "یک‌به‌یک، حضوری یا آنلاین · حداقل ۵ جلسه", c: "peach" },
 ];
-const DAYS = [{ id: "a", label: "شنبه و دوشنبه" }, { id: "b", label: "یکشنبه و سه‌شنبه" }];
-const TIMES = [{ id: "m", label: "صبح ۹ تا ۱۰:۳۰" }, { id: "e1", label: "عصر ۱۷ تا ۱۸:۳۰" }, { id: "e2", label: "عصر ۱۸:۴۵ تا ۲۰:۱۵" }];
+/* on: class days as week indexes (0 = Saturday). */
+const DAYS = [{ id: "a", label: "شنبه و دوشنبه", on: [0, 2] }, { id: "b", label: "یکشنبه و سه‌شنبه", on: [1, 3] }];
+const TIMES = [
+  { id: "m", label: "صبح ۹ تا ۱۰:۳۰", part: "صبح", span: "۹:۰۰ تا ۱۰:۳۰", i: "sun" },
+  { id: "e1", label: "عصر ۱۷ تا ۱۸:۳۰", part: "عصر", span: "۱۷:۰۰ تا ۱۸:۳۰", i: "sunset" },
+  { id: "e2", label: "شب ۱۸:۴۵ تا ۲۰:۱۵", part: "شب", span: "۱۸:۴۵ تا ۲۰:۱۵", i: "moon" },
+];
+const WEEK = ["ش", "ی", "د", "س", "چ", "پ", "ج"];
+/* Pretty pickers: time slot cards and weekly-pattern cards, each with a tick when picked. */
+const timeCards = (sel, attr) => `<div class="slots">${TIMES.map((x) => `<button type="button" class="slot${sel === x.id ? " on" : ""}" data-${attr}="${x.id}" aria-pressed="${sel === x.id}">${ICON[x.i]}<b>${x.part}</b><span class="num">${x.span}</span>${sel === x.id ? ICON.tick : ""}</button>`).join("")}</div>`;
+const dayCards = (sel) => `<div class="pats">${DAYS.map((d) => `<button type="button" class="pat${sel === d.id ? " on" : ""}" data-day="${d.id}" aria-pressed="${sel === d.id}"><b>${d.label}</b><span class="wk">${WEEK.map((w, i) => `<i${d.on.includes(i) ? ' class="y"' : ""}>${w}</i>`).join("")}</span>${sel === d.id ? ICON.tick : ""}</button>`).join("")}</div>`;
 const KB = [
   { q: "شهریه‌ها چقدره؟", a: "عمومی بزرگسالان ۴٫۸ میلیون، کودکان ۳٫۹، مکالمه ۳٫۲، آیلتس ۹٫۵، تافل ۹٫۸، تجاری ۵٫۶ میلیون تومان؛ Teen از ۳٫۵ تا ۵٫۴ و خصوصی هر جلسه ۹۵۰ هزار. کتاب جداست.", src: "دوره‌ها و شهریه", k: "شهریه قیمت هزینه چقدر آیلتس تافل" },
   { q: "کلاس آنلاین دارید؟", a: "بله، زنده در Google Meet، با فایل ضبط‌شده تا آخر ترم. شهریه‌ی آنلاین ۱۰٪ کمتره.", src: "سوالات متداول", k: "آنلاین گوگل میت ضبط" },
@@ -410,8 +440,9 @@ function register() {
     <div><label class="label" for="nm">نام و نام خانوادگی</label><input id="nm" class="input" autocomplete="name" value="${esc(r.name)}" placeholder="سارا رضایی"><div class="err" id="e-nm"></div></div>
     <div><label class="label" for="ph">موبایل</label><div class="row"><input id="ph" class="input num" inputmode="tel" value="${esc(r.phone)}" placeholder="۰۹۱۲۳۴۵۶۷۸۹" style="flex:1"><button class="btn soft" type="button" data-act="contact" style="white-space:nowrap">با یه لمس</button></div><div class="err" id="e-ph"></div></div>
     <div><label class="label" for="cs">دوره</label><select id="cs" class="input">${COURSES.map((c) => `<option value="${c.id}" ${r.course === c.id ? "selected" : ""}>${c.name}</option>`).join("")}</select></div>
-    <div class="stack"><div><label class="label" for="dy">روز</label><select id="dy" class="input"><option value="">فرقی نداره</option>${DAYS.map((d) => `<option value="${d.id}" ${r.day === d.id ? "selected" : ""}>${d.label}</option>`).join("")}</select></div>
-      <div><label class="label" for="tm">ساعت</label><select id="tm" class="input"><option value="">فرقی نداره</option>${TIMES.map((x) => `<option value="${x.id}" ${r.time === x.id ? "selected" : ""}>${x.label}</option>`).join("")}</select></div></div>
+    <div><span class="label">روزهای کلاس <span class="hint">· اختیاری</span></span>${dayCards(r.day)}</div>
+    <div><span class="label">ساعت <span class="hint">· اختیاری</span></span>${timeCards(r.time, "time")}</div>
+    <div class="start">${ICON.cal}<span>شروع کلاس‌ها: <b>${faDate(TERM.start)}</b></span></div>
     <div class="seg"><button type="button" data-rm="in" aria-pressed="${r.mode === "in"}">حضوری</button><button type="button" data-rm="on" aria-pressed="${r.mode === "on"}">آنلاین</button></div>
   </div>`;
 }
@@ -459,7 +490,7 @@ function trial() {
   const t = state.trial;
   return `${topBar("کلاس آزمایشی")}<div class="glass stack" style="padding:16px"><b>یه جلسه‌ی واقعی، رایگان 🎁</b><span class="hint">برای بزرگسالان، بعد از تعیین سطح</span>
     <div><span class="label">روز</span><button class="input datebtn" type="button" data-act="cal">${ICON.cal}${t.date ? `<span>${faDate(new Date(t.date + "T12:00:00"))}</span>` : `<span class="ph">انتخاب از تقویم</span>`}<span class="chev">${ICON.chev}</span></button></div>
-    <div><label class="label" for="tt">ساعت</label><select id="tt" class="input"><option value="">انتخاب کن</option>${TIMES.map((x) => `<option value="${x.id}" ${t.time === x.id ? "selected" : ""}>${x.label}</option>`).join("")}</select></div>
+    <div><span class="label">ساعت</span>${timeCards(t.time, "tt")}</div>
     <div class="err" id="e-tr"></div></div>`;
 }
 function search(q) {
@@ -478,7 +509,7 @@ function render() {
   if (r === "ask") $("#af").onsubmit = (e) => { e.preventDefault(); state.q = $("#aq").value.trim(); render(); };
 }
 const digits = (p) => p.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/\D/g, "").replace(/^98/, "0");
-function readReg() { const r = state.reg; r.name = $("#nm").value.trim(); r.phone = $("#ph").value.trim(); r.course = $("#cs").value; r.day = $("#dy").value; r.time = $("#tm").value; store.set("reg", r); return r; }
+function readReg() { const r = state.reg; r.name = $("#nm").value.trim(); r.phone = $("#ph").value.trim(); r.course = $("#cs").value; store.set("reg", r); return r; }
 function done(title, sub) {
   haptic("ok");
   $("#app").innerHTML = `${topBar(title)}<div class="glass done"><div class="ok">${ICON.check}</div><b style="font-size:18px">${title}</b><div class="hint" style="margin-top:6px">${sub}</div></div>`;
@@ -497,7 +528,6 @@ function submitReg() {
 }
 function submitTrial() {
   const t = state.trial;
-  t.time = $("#tt").value;
   if (!t.date || !t.time) { $("#e-tr").textContent = "روز و ساعت رو انتخاب کن."; haptic("heavy"); return; }
   if (!state.reg.name || !state.reg.phone) { toast("یه بار اسم و شماره‌ت رو تو ثبت‌نام بنویس؛ بعد رزرو با یه لمسه."); go("register"); return; }
   if (CAN_SEND) { try { tg.sendData(JSON.stringify({ type: "trial", ...t, name: state.reg.name, phone: digits(state.reg.phone) })); return; } catch (e) {} }
@@ -536,6 +566,9 @@ document.addEventListener("click", async (e) => {
   if (d.ses) { state.calc.sessions = Math.min(40, Math.max(5, state.calc.sessions + Number(d.ses))); haptic("light"); return courseSheet("private"); }
   if (d.reg) { state.reg.course = d.reg; if (d.tl) state.calc.teen = Number(d.tl); state.reg.mode = state.calc.mode; store.set("reg", state.reg); return go("register"); }
   if (d.rm) { readReg(); state.reg.mode = d.rm; store.set("reg", state.reg); haptic("light"); return render(); }
+  /* Day and time are optional: tapping the picked card again clears it. */
+  if (d.day || d.time) { readReg(); const k = d.day ? "day" : "time", v = d.day || d.time; state.reg[k] = state.reg[k] === v ? "" : v; store.set("reg", state.reg); haptic("light"); return render(); }
+  if (d.tt) { state.trial.time = d.tt; haptic("light"); return render(); }
   if (d.who) { state.test = { who: d.who, i: 0, ans: [] }; store.set("test", state.test); haptic("light"); return render(); }
   if (d.ans !== undefined) {
     const t = state.test; t.ans[t.i] = Number(d.ans); t.i += 1; haptic("light");
@@ -554,7 +587,7 @@ document.addEventListener("click", async (e) => {
     case "homescreen": if (IN_TG && tg.addToHomeScreen) tg.addToHomeScreen(); else toast("داخل تلگرام، آیکون آموزشگاه روی صفحه‌ی گوشی میاد."); return;
     case "retest": state.test = { who: "", i: 0, ans: [] }; store.set("test", state.test); return render();
     case "story": return story();
-    case "cal": if ($("#tt")) state.trial.time = $("#tt").value; haptic("light"); return calSheet();
+    case "cal": haptic("light"); return calSheet();
     case "calok": haptic("ok"); closeSheet(); return render();
   }
 });
