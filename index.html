@@ -103,58 +103,110 @@ select.input { appearance: none; -webkit-appearance: none; padding-inline-start:
   background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%237C5CF0' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat left 14px center; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-/* calendar */
-.datebtn { display: flex; align-items: center; gap: 10px; text-align: start; font-weight: 800; }
-.datebtn > svg { width: 26px; height: 26px; flex-shrink: 0; }
-.datebtn .ph { color: var(--ink2); font-weight: 600; }
+/* calendar: 2026 booking style; squircle days with the free seats under each number */
+.datebtn { display: flex; align-items: center; gap: 12px; text-align: start; font-weight: 800; min-height: 62px; padding-block: 9px; }
+.datebtn .ic { width: 40px; height: 40px; border-radius: 13px; background: var(--lilac-a); border: 1.5px solid var(--lilac-line); display: grid; place-items: center; flex-shrink: 0; }
+.datebtn .ic svg { width: 22px; height: 22px; }
+.datebtn .v { display: flex; flex-direction: column; line-height: 1.35; min-width: 0; }
+.datebtn .v small { font-size: 12px; font-weight: 700; color: var(--ink2); }
+.datebtn .ph { color: var(--ink2); font-weight: 700; }
 .datebtn .chev { margin-inline-start: auto; color: var(--lilac-d); display: grid; }
-.cal-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.cal-head b { flex: 1; text-align: center; font-size: 18px; font-weight: 900; }
-.cal-head .round:disabled { opacity: 0.3; }
+.cal-title { text-align: center; margin: 0 0 12px; }
+.cal-title b { display: block; font-size: 18px; font-weight: 900; }
+.calcard { background: #FFFFFF; border: 1.5px solid var(--glass-line); border-radius: 24px; padding: 12px 8px 10px; box-shadow: var(--shadow); overflow: hidden; }
+.cal-head { display: flex; align-items: center; gap: 10px; margin: 0 4px 6px; }
+.cal-head .m { flex: 1; text-align: center; line-height: 1.25; }
+.cal-head .m b { display: block; font-size: 20px; font-weight: 900; }
+.cal-head .m span { font-size: 12.5px; font-weight: 700; color: var(--ink2); }
+.navb { width: 40px; height: 40px; border-radius: 14px; border: 1.5px solid var(--lilac-line); background: var(--lilac-a); color: var(--lilac-d); display: grid; place-items: center; padding: 0; }
+.navb svg { width: 18px; height: 18px; }
+.navb:disabled { opacity: 0.35; }
 .flip svg { transform: scaleX(-1); }
-.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 7px; }
-.cal .wd { text-align: center; font-size: 12.5px; font-weight: 800; color: var(--ink2); }
-.cd { position: relative; aspect-ratio: 1; min-height: 40px; border: 1.5px solid var(--lilac-line); background: #FFFFFF; border-radius: 14px; font-weight: 800; font-size: 15px; display: grid; place-items: center; padding: 0; }
-.cd:disabled { border-color: transparent; background: #F6F5FA; color: #C4C3D2; cursor: default; }
-.cd.on { background: linear-gradient(135deg, var(--brand), var(--brand-2)); border-color: transparent; color: #FFFFFF; transform: scale(1.06); }
-.pats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.pat, .slot { position: relative; border: 1.5px solid var(--glass-line); background: #FFFFFF; border-radius: 18px; display: flex; flex-direction: column; align-items: center; transition: transform 0.15s, box-shadow 0.2s; }
-.pat { padding: 13px 8px 12px; gap: 9px; }
-.pat b { font-size: 14px; font-weight: 800; }
-.wk { display: flex; gap: 2px; }
-.wk i { font-style: normal; width: 15px; height: 17px; border-radius: 5px; display: grid; place-items: center; font-size: 9.5px; font-weight: 800; color: #B9B8C8; background: #F4F3F9; }
-.wk i.y { background: var(--lilac-b); color: var(--lilac-d); }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); }
+.cal .wd { text-align: center; font-size: 12px; font-weight: 800; color: var(--ink2); padding: 6px 0 8px; margin-bottom: 4px; border-bottom: 1.5px dashed var(--glass-line); }
+.cal .wd.fri { color: #E0706A; }
+.cd { position: relative; height: 52px; margin: 2px; padding: 0; border: 1.5px solid transparent; border-radius: 14px; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--ink); transition: transform 0.15s, background 0.2s; }
+.cd .n { font-size: 16px; font-weight: 900; line-height: 1.25; }
+.cd .s { font-size: 9.5px; font-weight: 800; line-height: 1.2; color: var(--mint-d); }
+.cd:disabled { cursor: default; }
+.cd:disabled .n { color: #CFCEDB; }
+.cd.fri:disabled .n { color: #F2BEBA; }
+.cd.av { background: #FFFFFF; border-color: var(--glass-line); }
+.cd.av:active { transform: scale(0.94); }
+.cd.low .s { color: #D9822B; }
+.cd.full { background: #F6F5FA; }
+.cd.full .n { color: #B9B8C8; text-decoration: line-through; }
+.cd.full .s { color: #B9B8C8; }
+.cd.pat { background: var(--lilac-a); border-color: var(--lilac-line); }
+.cd.pat .n, .cd.pat .s { color: var(--lilac-d); }
+.cd.today { border: 2px solid #FFDC85; }
+.cd.on { background: linear-gradient(135deg, var(--brand), var(--brand-2)); border-color: transparent; box-shadow: 0 8px 18px rgba(124, 92, 240, 0.35); transform: scale(1.04); }
+.cd.on .n, .cd.on .s { color: #FFFFFF; }
+.cal.in-next { animation: inNext 0.28s ease; }
+.cal.in-prev { animation: inPrev 0.28s ease; }
+@keyframes inNext { from { opacity: 0; transform: translateX(-28px); } to { opacity: 1; transform: none; } }
+@keyframes inPrev { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: none; } }
+.legend { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px 16px; margin-top: 8px; padding-top: 10px; border-top: 1.5px dashed var(--glass-line); font-size: 12px; font-weight: 700; color: var(--ink2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.lg { width: 12px; height: 12px; border-radius: 4px; display: inline-block; border: 1.5px solid var(--glass-line); background: #FFFFFF; }
+.lg.full { background: #ECEBF3; border-color: #ECEBF3; }
+.lg.today { border: 2px solid #FFDC85; }
+.lg.on { background: linear-gradient(135deg, var(--brand), var(--brand-2)); border-color: transparent; }
+.lg.pat { background: var(--lilac-a); border-color: var(--lilac-line); }
 .slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.slot { position: relative; border: 1.5px solid var(--glass-line); background: #FFFFFF; border-radius: 18px; display: flex; flex-direction: column; align-items: center; transition: transform 0.15s, box-shadow 0.2s; }
 .slot { padding: 12px 4px 10px; gap: 1px; }
 .slot svg { width: 32px; height: 32px; margin-bottom: 4px; }
 .slot b { font-size: 15px; font-weight: 900; }
 .slot span { font-size: 11.5px; font-weight: 700; color: var(--ink2); white-space: nowrap; }
-.pat.on, .slot.on { border-color: var(--brand); background: var(--lilac-a); box-shadow: 0 6px 16px rgba(124, 92, 240, 0.18); }
-.pat.on .wk i.y { background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #FFFFFF; }
+.slot.on { border-color: var(--brand); background: var(--lilac-a); box-shadow: 0 6px 16px rgba(124, 92, 240, 0.18); }
 .slot.on span { color: var(--lilac-d); }
-.pat:active, .slot:active { transform: scale(0.96); }
-.start { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 16px; background: var(--mint-a); border: 1.5px solid var(--mint-line); font-size: 14px; }
-.start svg { width: 24px; height: 24px; flex-shrink: 0; }
+.slot:active { transform: scale(0.96); }
 .tk { position: absolute; top: -6px; inset-inline-end: -6px; width: 20px; height: 20px; border-radius: 50%; background: #2DBE8C; border: 2px solid #FFFFFF; display: grid; place-items: center; animation: pop 0.3s cubic-bezier(0.3, 1.6, 0.5, 1); }
 .btn:disabled { opacity: 0.5; }
 
 /* drawers: crowded parts fold away */
-.acc { background: #FFFFFF; border: 1.5px solid var(--glass-line); border-radius: 20px; box-shadow: var(--shadow); overflow: hidden; }
-.acc > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; min-height: 60px; }
+.acc { background: #FFFFFF; border: 1.5px solid var(--glass-line); border-radius: 22px; box-shadow: var(--shadow); overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
+.acc[open] { border-color: var(--lilac-line); box-shadow: 0 10px 26px rgba(106, 79, 208, 0.12); }
+.acc > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px; cursor: pointer; min-height: 66px; }
 .acc > summary::-webkit-details-marker { display: none; }
 .acc > summary b { font-size: 16.5px; font-weight: 900; }
-.acc .chev { margin-inline-start: auto; width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; background: var(--lilac-a); color: var(--lilac-d); transition: transform 0.2s; flex-shrink: 0; }
-.acc[open] .chev { transform: rotate(180deg); }
-.acc[open] > summary { border-bottom: 1.5px solid var(--glass-line); }
-.acc .badge { width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; flex-shrink: 0; }
+.acc[open] > summary { background: linear-gradient(180deg, var(--lilac-a), #FFFFFF); border-bottom: 1.5px dashed var(--glass-line); }
+.acc .badge { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; flex-shrink: 0; }
 .acc .badge svg { width: 26px; height: 26px; }
-.faq details { border-top: 1.5px solid var(--glass-line); }
-.faq details:first-child { border-top: 0; }
-.faq summary { list-style: none; display: flex; gap: 10px; align-items: center; padding: 13px 16px; font-weight: 800; cursor: pointer; }
+.acc .cnt { margin-inline-start: auto; font-size: 12px; font-weight: 800; color: var(--lilac-d); background: var(--lilac-a); border: 1.5px solid var(--lilac-line); border-radius: 999px; padding: 2px 10px; white-space: nowrap; }
+.acc .chev { margin-inline-start: auto; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: #FFFFFF; border: 1.5px solid var(--lilac-line); color: var(--lilac-d); transition: transform 0.25s, background 0.2s; flex-shrink: 0; }
+.acc .cnt + .chev { margin-inline-start: 0; }
+.acc[open] .chev { transform: rotate(180deg); background: var(--brand); border-color: var(--brand); color: #FFFFFF; }
+.acc[open] > :not(summary) { animation: accIn 0.25s ease; }
+@keyframes accIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.acc .item { border-top: 1.5px dashed var(--glass-line); }
+.acc .item:first-child { border-top: 0; }
+.acc .item .price { background: var(--mint-a); border: 1.5px solid var(--mint-line); color: var(--mint-d); padding: 3px 10px; border-radius: 999px; font-size: 12.5px; }
+.faq { padding: 4px; }
+.faq details { border-radius: 16px; transition: background 0.2s; }
+.faq details + details { margin-top: 2px; }
+.faq details[open] { background: var(--lilac-a); }
+.faq summary { list-style: none; display: flex; gap: 10px; align-items: center; padding: 11px 10px; font-weight: 800; cursor: pointer; }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary .chev { margin-inline-start: auto; color: var(--lilac-d); transition: transform 0.2s; display: grid; }
+.faq .qm { width: 30px; height: 30px; border-radius: 10px; display: grid; place-items: center; flex-shrink: 0; background: var(--sky-a); border: 1.5px solid var(--sky-line); color: var(--sky-d); font-weight: 900; }
+.faq details[open] .qm { background: var(--brand); border-color: var(--brand); color: #FFFFFF; }
+.faq summary .chev { margin-inline-start: auto; color: var(--lilac-d); transition: transform 0.25s; display: grid; }
 .faq details[open] summary .chev { transform: rotate(180deg); }
-.faq .ans { padding: 0 16px 14px; }
+.faq .ans { margin: 0 10px 10px; padding: 12px 14px; background: #FFFFFF; border-radius: 14px; border-inline-start: 3px solid var(--brand); animation: accIn 0.25s ease; }
+/* course picker sheet: replaces the phone's plain dropdown */
+.pick-h { font-size: 13px; font-weight: 800; color: var(--ink2); margin: 0 6px 6px; }
+.picks { padding: 4px; }
+.pick { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px; border: 0; background: transparent; border-radius: 16px; text-align: start; transition: background 0.2s, transform 0.15s; }
+.pick + .pick { margin-top: 2px; }
+.pick .dot, .datebtn .dot { width: 40px; height: 40px; border-radius: 13px; display: grid; place-items: center; font-weight: 900; flex-shrink: 0; }
+.pick .v { display: flex; flex-direction: column; line-height: 1.35; flex: 1; min-width: 0; }
+.pick .v b { font-size: 15.5px; font-weight: 800; }
+.pick .v small { font-size: 12.5px; font-weight: 700; color: var(--ink2); }
+.pick .radio { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--lilac-line); flex-shrink: 0; transition: border 0.15s; }
+.pick.on { background: var(--lilac-a); }
+.pick.on .radio { border: 7px solid var(--brand); }
+.pick:active { transform: scale(0.98); }
 .big { font-size: 26px; font-weight: 900; }
 
 /* test */
@@ -179,7 +231,7 @@ select.input { appearance: none; -webkit-appearance: none; padding-inline-start:
 @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
 </style>
 
-<div class="ribbon">نسخه‌ی آزمایشی ۷ · اطلاعات نمونه</div>
+<div class="ribbon">نسخه‌ی آزمایشی ۸ · اطلاعات نمونه</div>
 <div class="app" id="app"><div class="hint" style="text-align:center;padding:40px 0">در حال باز شدن…</div></div>
 <div id="mainbar"></div>
 <div id="overlay"></div>
@@ -254,16 +306,15 @@ const COURSES = [
   { id: "private", name: "کلاس خصوصی", fee: 950000, per: "جلسه", info: "یک‌به‌یک، حضوری یا آنلاین · حداقل ۵ جلسه", c: "peach" },
 ];
 /* on: class days as week indexes (0 = Saturday). */
-const DAYS = [{ id: "a", label: "شنبه و دوشنبه", on: [0, 2] }, { id: "b", label: "یکشنبه و سه‌شنبه", on: [1, 3] }];
+const DAYS = [{ id: "a", label: "شنبه و دوشنبه", long: "شنبه‌ها و دوشنبه‌ها", on: [0, 2] }, { id: "b", label: "یکشنبه و سه‌شنبه", long: "یکشنبه‌ها و سه‌شنبه‌ها", on: [1, 3] }];
 const TIMES = [
   { id: "m", label: "صبح ۹ تا ۱۰:۳۰", part: "صبح", span: "۹:۰۰ تا ۱۰:۳۰", i: "sun" },
   { id: "e1", label: "عصر ۱۷ تا ۱۸:۳۰", part: "عصر", span: "۱۷:۰۰ تا ۱۸:۳۰", i: "sunset" },
   { id: "e2", label: "شب ۱۸:۴۵ تا ۲۰:۱۵", part: "شب", span: "۱۸:۴۵ تا ۲۰:۱۵", i: "moon" },
 ];
 const WEEK = ["ش", "ی", "د", "س", "چ", "پ", "ج"];
-/* Pretty pickers: time slot cards and weekly-pattern cards, each with a tick when picked. */
+/* Time slot cards, with a tick when picked. */
 const timeCards = (sel, attr) => `<div class="slots">${TIMES.map((x) => `<button type="button" class="slot${sel === x.id ? " on" : ""}" data-${attr}="${x.id}" aria-pressed="${sel === x.id}">${ICON[x.i]}<b>${x.part}</b><span class="num">${x.span}</span>${sel === x.id ? ICON.tick : ""}</button>`).join("")}</div>`;
-const dayCards = (sel) => `<div class="pats">${DAYS.map((d) => `<button type="button" class="pat${sel === d.id ? " on" : ""}" data-day="${d.id}" aria-pressed="${sel === d.id}"><b>${d.label}</b><span class="wk">${WEEK.map((w, i) => `<i${d.on.includes(i) ? ' class="y"' : ""}>${w}</i>`).join("")}</span>${sel === d.id ? ICON.tick : ""}</button>`).join("")}</div>`;
 const KB = [
   { q: "شهریه‌ها چقدره؟", a: "عمومی بزرگسالان ۴٫۸ میلیون، کودکان ۳٫۹، مکالمه ۳٫۲، آیلتس ۹٫۵، تافل ۹٫۸، تجاری ۵٫۶ میلیون تومان؛ Teen از ۳٫۵ تا ۵٫۴ و خصوصی هر جلسه ۹۵۰ هزار. کتاب جداست.", src: "دوره‌ها و شهریه", k: "شهریه قیمت هزینه چقدر آیلتس تافل" },
   { q: "کلاس آنلاین دارید؟", a: "بله، زنده در Google Meet، با فایل ضبط‌شده تا آخر ترم. شهریه‌ی آنلاین ۱۰٪ کمتره.", src: "سوالات متداول", k: "آنلاین گوگل میت ضبط" },
@@ -301,7 +352,7 @@ const state = {
   q: "",
 };
 /* Which drawers the user opened, so a re-render does not snap them shut. */
-const ui = { calcOpen: false, calM: 0 };
+const ui = { calcOpen: false, calM: 0, daysM: 0, calDir: "", sheet: "" };
 document.addEventListener("toggle", (e) => { const k = e.target.dataset && e.target.dataset.drawer; if (k) ui[k] = e.target.open; }, true);
 const ROUTES = ["home", "courses", "test", "register", "ask", "trial"];
 const route = () => { const r = (location.hash || "#home").slice(1); return ROUTES.includes(r) ? r : "home"; };
@@ -324,10 +375,13 @@ function setMain(text, fn) {
   if (text) $("#mb").onclick = () => { haptic("medium"); fn(); };
 }
 function sheet(html) {
+  /* Already open (a tap inside it): swap the content only, so it doesn't slide up again. */
+  const open = $("#sw .sheet");
+  if (open) { open.innerHTML = `<div class="grab"></div>${html}`; return; }
   $("#overlay").innerHTML = `<div class="sheet-wrap" id="sw"><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div></div>`;
-  $("#sw").onclick = (e) => { if (e.target.id === "sw") closeSheet(); };
+  $("#sw").onclick = (e) => { if (e.target.id !== "sw") return; const picker = ui.sheet; closeSheet(); if (picker) render(); };
 }
-function closeSheet() { $("#overlay").innerHTML = ""; }
+function closeSheet() { $("#overlay").innerHTML = ""; ui.sheet = ""; }
 function topBar(title) {
   if (tg && tg.BackButton) title ? tg.BackButton.show() : tg.BackButton.hide();
   return `<div class="top">${title ? `<button class="round" type="button" data-act="back" aria-label="برگشت">${ICON.back}</button>` : ""}<h1>${title || "آموزشگاه زبان شما"}</h1>
@@ -360,7 +414,7 @@ function courses() {
       <div class="dot t-${c.c}">${c.name.slice(0, 1)}</div><div><b>${c.name}</b><span class="hint">${c.per === "جلسه" ? "هر جلسه" : "هر " + c.per}</span></div>
       <span class="price num">${c.teen ? "از " : ""}${toman(c.fee)}</span></button>`;
   return `${topBar("دوره‌ها")}<div class="stack">${GROUPS.map((g, i) => `<details class="acc"${i === 0 ? " open" : ""}>
-      <summary><span class="badge t-${g.c}">${ICON[g.i]}</span><div><b>${g.t}</b><div class="hint">${g.s}</div></div><span class="chev">${ICON.chev}</span></summary>
+      <summary><span class="badge t-${g.c}">${ICON[g.i]}</span><div><b>${g.t}</b><div class="hint">${g.s}</div></div><span class="cnt">${fa(g.ids.length)} دوره</span><span class="chev">${ICON.chev}</span></summary>
       <div>${g.ids.map((id) => row(COURSES.find((c) => c.id === id))).join("")}</div></details>`).join("")}</div>
     <div class="hint" style="text-align:center;margin-top:12px">مبلغ‌ها به تومان · کتاب جداست</div>`;
 }
@@ -436,13 +490,15 @@ function result() {
 }
 function register() {
   const r = state.reg;
+  const pat = DAYS.find((x) => x.id === r.day), course = COURSES.find((c) => c.id === r.course) || COURSES[0];
   return `${topBar("ثبت‌نام")}<div class="glass stack" style="padding:16px">
     <div><label class="label" for="nm">نام و نام خانوادگی</label><input id="nm" class="input" autocomplete="name" value="${esc(r.name)}" placeholder="سارا رضایی"><div class="err" id="e-nm"></div></div>
     <div><label class="label" for="ph">موبایل</label><div class="row"><input id="ph" class="input num" inputmode="tel" value="${esc(r.phone)}" placeholder="۰۹۱۲۳۴۵۶۷۸۹" style="flex:1"><button class="btn soft" type="button" data-act="contact" style="white-space:nowrap">با یه لمس</button></div><div class="err" id="e-ph"></div></div>
-    <div><label class="label" for="cs">دوره</label><select id="cs" class="input">${COURSES.map((c) => `<option value="${c.id}" ${r.course === c.id ? "selected" : ""}>${c.name}</option>`).join("")}</select></div>
-    <div><span class="label">روزهای کلاس <span class="hint">· اختیاری</span></span>${dayCards(r.day)}</div>
+    <div><span class="label">دوره</span><button class="input datebtn" type="button" data-act="coursepick"><span class="dot t-${course.c}">${course.name.slice(0, 1)}</span>
+      <span class="v"><span>${course.name}</span><small class="num">${course.teen ? "از " : ""}${toman(course.fee)} تومان · هر ${course.per}</small></span><span class="chev">${ICON.chev}</span></button></div>
+    <div><span class="label">روزهای کلاس <span class="hint">· اختیاری</span></span><button class="input datebtn" type="button" data-act="days"><span class="ic">${ICON.cal}</span>
+      <span class="v">${pat ? `<span>${pat.long}</span><small>شروع: ${faDate(firstClass(pat))}</small>` : `<span class="ph">انتخاب از تقویم</span><small>شروع ترم: ${faDate(TERM.start)}</small>`}</span><span class="chev">${ICON.chev}</span></button></div>
     <div><span class="label">ساعت <span class="hint">· اختیاری</span></span>${timeCards(r.time, "time")}</div>
-    <div class="start">${ICON.cal}<span>شروع کلاس‌ها: <b>${faDate(TERM.start)}</b></span></div>
     <div class="seg"><button type="button" data-rm="in" aria-pressed="${r.mode === "in"}">حضوری</button><button type="button" data-rm="on" aria-pressed="${r.mode === "on"}">آنلاین</button></div>
   </div>`;
 }
@@ -451,7 +507,7 @@ function ask() {
   return `${topBar("بپرس")}<form class="row" id="af"><input id="aq" class="input" value="${esc(state.q)}" placeholder="سؤالت رو بنویس…" autocomplete="off" style="flex:1"><button class="btn" type="submit">بپرس</button></form>
     <div class="stack" style="margin-top:12px">${state.q ? (res.length ? res.map((x) => `<div class="glass" style="padding:14px 16px;border-color:var(--lilac-line)"><b>${esc(x.q)}</b><div style="margin-top:4px">${esc(x.a)}</div><div class="hint" style="margin-top:6px">منبع: ${esc(x.src)}</div></div>`).join("") : `<div class="glass" style="padding:14px 16px">جوابش تو اسناد نیست؛ با دفتر تماس بگیر.</div>`) : ""}
       <div class="label" style="margin:4px 4px 0">سؤال‌های پرتکرار</div>
-      <div class="glass faq">${KB.map((x) => `<details><summary>${esc(x.q)}<span class="chev">${ICON.chev}</span></summary><div class="ans">${esc(x.a)}<div class="hint" style="margin-top:4px">منبع: ${esc(x.src)}</div></div></details>`).join("")}</div>
+      <div class="glass faq">${KB.map((x) => `<details><summary><span class="qm">؟</span><span>${esc(x.q)}</span><span class="chev">${ICON.chev}</span></summary><div class="ans">${esc(x.a)}<div class="hint" style="margin-top:4px">منبع: ${esc(x.src)}</div></div></details>`).join("")}</div>
       <div class="glass" style="padding:12px 16px"><div class="row"><span class="hint">تلفن دفتر</span><b class="num" style="margin-inline-start:auto;user-select:all">۰۲۱-۱۲۳۴۵۶۷۸</b><button class="btn soft" type="button" data-copy="02112345678">کپی</button></div>
         <div class="hint" style="margin-top:6px">خیابان نمونه، پلاک ۱۲ · شنبه تا چهارشنبه ۹ تا ۲۰</div></div></div>`;
 }
@@ -464,32 +520,77 @@ const noon = (t) => { const x = new Date(t); x.setHours(12, 0, 0, 0); return x; 
 const firstOfMonth = (d) => noon(d.getTime() - (jp(d).day - 1) * DAY);
 /* Classes run Saturday to Wednesday; bookable from tomorrow, up to 30 days ahead. */
 const canBook = (d) => { const n = Math.round((d - noon(Date.now())) / DAY); return n >= 1 && n <= 30 && d.getDay() !== 4 && d.getDay() !== 5; };
-function monthDays(offset) {
-  let d = firstOfMonth(noon(Date.now()));
+const widx = (d) => (d.getDay() + 1) % 7; // 0 = Saturday … 6 = Friday
+function monthDays(offset, base = Date.now()) {
+  let d = firstOfMonth(noon(base));
   for (let k = 0; k < offset; k++) d = firstOfMonth(noon(d.getTime() + 32 * DAY));
   const out = [], m = jp(d).month;
   for (let x = d; jp(x).month === m; x = noon(x.getTime() + DAY)) out.push(x);
   return out;
 }
-function calSheet() {
-  const days = monthDays(ui.calM);
-  const sel = state.trial.date;
-  const title = new Intl.DateTimeFormat("fa-IR-u-ca-persian", { month: "long", year: "numeric" }).format(days[0]);
-  const blanks = Array((days[0].getDay() + 1) % 7).fill("<span></span>");
+/* Sample free seats per day (0 = full); real numbers come from the academy later. */
+const seats = (d) => (jp(d).day * 5 + jp(d).month) % 6;
+/* One month card. cell(d) → { cls, attr, sub, tick } decides how each day looks. */
+function calCard(offset, max, base, cell, legend) {
+  const days = monthDays(offset, base);
+  const fmt = (o) => new Intl.DateTimeFormat("fa-IR-u-ca-persian", o).format(days[0]);
+  const today = dkey(noon(Date.now()));
+  const dir = ui.calDir; ui.calDir = "";
   const cells = days.map((d) => {
-    const k = dkey(d), on = k === sel;
-    return `<button type="button" class="cd${on ? " on" : ""}" ${canBook(d) ? `data-cday="${k}"` : "disabled"} aria-pressed="${on}" aria-label="${faDate(d)}">${fa(jp(d).day)}${on ? ICON.tick : ""}</button>`;
-  });
-  sheet(`<div class="cal-head"><button class="round" type="button" data-calm="-1" ${ui.calM > 0 ? "" : "disabled"} aria-label="ماه قبل">${ICON.back}</button>
-      <b>${title}</b><button class="round flip" type="button" data-calm="1" ${ui.calM < 1 ? "" : "disabled"} aria-label="ماه بعد">${ICON.back}</button></div>
-    <div class="cal">${["ش", "ی", "د", "س", "چ", "پ", "ج"].map((w) => `<span class="wd">${w}</span>`).join("")}${blanks.join("")}${cells.join("")}</div>
-    <div class="hint" style="text-align:center;margin:10px 0 12px">پنجشنبه و جمعه کلاس نداریم</div>
-    <button class="btn" type="button" data-act="calok" style="width:100%;padding:14px" ${sel ? "" : "disabled"}>${sel ? "تأیید · " + faDate(new Date(sel + "T12:00:00")) : "یه روز رو لمس کن"}</button>`);
+    const c = cell(d), k = dkey(d);
+    return `<button type="button" class="cd ${c.cls || ""}${widx(d) === 6 ? " fri" : ""}${k === today ? " today" : ""}" ${c.attr || "disabled"} aria-pressed="${Boolean(c.tick)}" aria-label="${faDate(d)}${c.sub ? "، " + c.sub : ""}"><span class="n">${fa(jp(d).day)}</span>${c.sub ? `<span class="s">${c.sub}</span>` : ""}${c.tick ? ICON.tick : ""}</button>`;
+  }).join("");
+  return `<div class="calcard"><div class="cal-head"><button class="navb" type="button" data-nav="-1" ${offset > 0 ? "" : "disabled"} aria-label="ماه قبل">${ICON.back}</button>
+      <div class="m"><b>${fmt({ month: "long" })}</b><span>${fmt({ year: "numeric" })}</span></div>
+      <button class="navb flip" type="button" data-nav="1" ${offset < max ? "" : "disabled"} aria-label="ماه بعد">${ICON.back}</button></div>
+    <div class="cal${dir ? " in-" + dir : ""}">${WEEK.map((w, i) => `<span class="wd${i === 6 ? " fri" : ""}">${w}</span>`).join("")}${"<span></span>".repeat(widx(days[0]))}${cells}</div>
+    <div class="legend">${legend}</div></div>`;
+}
+const trialCell = (d) => {
+  if (!canBook(d)) return {};
+  const k = dkey(d), n = seats(d), on = k === state.trial.date;
+  if (!n) return { cls: "full", sub: "پر" };
+  return { cls: on ? "on" : n === 1 ? "av low" : "av", attr: `data-cday="${k}"`, sub: `${fa(n)} جا`, tick: on };
+};
+function calSheet() {
+  ui.sheet = "cal";
+  const sel = state.trial.date;
+  sheet(`<div class="cal-title"><b>روز کلاس آزمایشی</b><span class="hint">زیر هر روز، جاهای خالیش نوشته شده</span></div>
+    ${calCard(ui.calM, 1, Date.now(), trialCell, `<span><i class="lg"></i>جای خالی</span><span><i class="lg full"></i>پر</span><span><i class="lg today"></i>امروز</span>`)}
+    <button class="btn" type="button" data-act="calok" style="width:100%;padding:14px;margin-top:14px" ${sel ? "" : "disabled"}>${sel ? "تأیید · " + faDate(new Date(sel + "T12:00:00")) : "یه روز رو لمس کن"}</button>`);
+}
+/* Class days: tap any day and the whole weekly pattern lights up from the term start. */
+const firstClass = (p) => { let d = noon(TERM.start); while (!p.on.includes(widx(d))) d = noon(d.getTime() + DAY); return d; };
+const daysCell = (d) => {
+  const w = widx(d);
+  if (d < noon(TERM.start) || !DAYS.some((x) => x.on.includes(w))) return {};
+  const p = DAYS.find((x) => x.id === state.reg.day);
+  const mine = Boolean(p && p.on.includes(w)), first = mine && dkey(d) === dkey(firstClass(p));
+  return { cls: first ? "on" : mine ? "pat" : "av", attr: `data-pday="${w}"`, sub: first ? "شروع" : mine ? "کلاس" : "", tick: first };
+};
+function daysSheet() {
+  ui.sheet = "days";
+  const p = DAYS.find((x) => x.id === state.reg.day);
+  sheet(`<div class="cal-title"><b>روزهای کلاس</b><span class="hint">روی یه روز بزن؛ همه‌ی جلسه‌هات رنگی می‌شن</span></div>
+    <div class="seg" style="margin-bottom:12px">${DAYS.map((x) => `<button type="button" data-pat="${x.id}" aria-pressed="${state.reg.day === x.id}">${x.label}</button>`).join("")}</div>
+    ${calCard(ui.daysM, 2, TERM.start, daysCell, `<span><i class="lg on"></i>جلسه‌ی اول</span><span><i class="lg pat"></i>جلسه‌ها</span><span><i class="lg"></i>قابل انتخاب</span>`)}
+    <div class="row" style="margin-top:14px"><button class="btn soft" type="button" data-act="daysclear" style="flex:1">فرقی نداره</button>
+      <button class="btn" type="button" data-act="daysok" style="flex:2;padding:14px" ${p ? "" : "disabled"}>${p ? "تأیید · " + p.long : "یه روز رو لمس کن"}</button></div>`);
+}
+/* Course picker: a tidy sheet instead of the phone's plain dropdown. */
+function coursePick() {
+  ui.sheet = "course";
+  sheet(`<div class="cal-title"><b>انتخاب دوره</b><span class="hint">مبلغ‌ها به تومان</span></div>
+    <div class="stack">${GROUPS.map((g) => `<div><div class="pick-h">${g.t}</div><div class="glass picks">${g.ids.map((id) => {
+      const c = COURSES.find((x) => x.id === id), on = state.reg.course === id;
+      return `<button type="button" class="pick${on ? " on" : ""}" data-pc="${id}" aria-pressed="${on}"><span class="dot t-${c.c}">${c.name.slice(0, 1)}</span><span class="v"><b>${c.name}</b><small class="num">${c.teen ? "از " : ""}${toman(c.fee)} · هر ${c.per}</small></span><span class="radio"></span></button>`;
+    }).join("")}</div></div>`).join("")}</div>`);
 }
 function trial() {
   const t = state.trial;
   return `${topBar("کلاس آزمایشی")}<div class="glass stack" style="padding:16px"><b>یه جلسه‌ی واقعی، رایگان 🎁</b><span class="hint">برای بزرگسالان، بعد از تعیین سطح</span>
-    <div><span class="label">روز</span><button class="input datebtn" type="button" data-act="cal">${ICON.cal}${t.date ? `<span>${faDate(new Date(t.date + "T12:00:00"))}</span>` : `<span class="ph">انتخاب از تقویم</span>`}<span class="chev">${ICON.chev}</span></button></div>
+    <div><span class="label">روز</span><button class="input datebtn" type="button" data-act="cal"><span class="ic">${ICON.cal}</span>
+      <span class="v">${t.date ? `<span>${faDate(new Date(t.date + "T12:00:00"))}</span><small>${fa(seats(new Date(t.date + "T12:00:00")))} جای خالی</small>` : `<span class="ph">انتخاب از تقویم</span><small>از فردا تا ۳۰ روز آینده</small>`}</span><span class="chev">${ICON.chev}</span></button></div>
     <div><span class="label">ساعت</span>${timeCards(t.time, "tt")}</div>
     <div class="err" id="e-tr"></div></div>`;
 }
@@ -509,7 +610,7 @@ function render() {
   if (r === "ask") $("#af").onsubmit = (e) => { e.preventDefault(); state.q = $("#aq").value.trim(); render(); };
 }
 const digits = (p) => p.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/\D/g, "").replace(/^98/, "0");
-function readReg() { const r = state.reg; r.name = $("#nm").value.trim(); r.phone = $("#ph").value.trim(); r.course = $("#cs").value; store.set("reg", r); return r; }
+function readReg() { const r = state.reg; r.name = $("#nm").value.trim(); r.phone = $("#ph").value.trim(); store.set("reg", r); return r; }
 function done(title, sub) {
   haptic("ok");
   $("#app").innerHTML = `${topBar(title)}<div class="glass done"><div class="ok">${ICON.check}</div><b style="font-size:18px">${title}</b><div class="hint" style="margin-top:6px">${sub}</div></div>`;
@@ -567,7 +668,7 @@ document.addEventListener("click", async (e) => {
   if (d.reg) { state.reg.course = d.reg; if (d.tl) state.calc.teen = Number(d.tl); state.reg.mode = state.calc.mode; store.set("reg", state.reg); return go("register"); }
   if (d.rm) { readReg(); state.reg.mode = d.rm; store.set("reg", state.reg); haptic("light"); return render(); }
   /* Day and time are optional: tapping the picked card again clears it. */
-  if (d.day || d.time) { readReg(); const k = d.day ? "day" : "time", v = d.day || d.time; state.reg[k] = state.reg[k] === v ? "" : v; store.set("reg", state.reg); haptic("light"); return render(); }
+  if (d.time) { readReg(); state.reg.time = state.reg.time === d.time ? "" : d.time; store.set("reg", state.reg); haptic("light"); return render(); }
   if (d.tt) { state.trial.time = d.tt; haptic("light"); return render(); }
   if (d.who) { state.test = { who: d.who, i: 0, ans: [] }; store.set("test", state.test); haptic("light"); return render(); }
   if (d.ans !== undefined) {
@@ -577,7 +678,14 @@ document.addEventListener("click", async (e) => {
   }
   if (d.q) { state.q = d.q; return render(); }
   if (d.cday) { state.trial.date = d.cday; haptic("light"); return calSheet(); }
-  if (d.calm) { ui.calM = Math.max(0, Math.min(1, ui.calM + Number(d.calm))); return calSheet(); }
+  if (d.pday) { const w = Number(d.pday); state.reg.day = DAYS.find((x) => x.on.includes(w)).id; store.set("reg", state.reg); haptic("light"); return daysSheet(); }
+  if (d.pat) { state.reg.day = d.pat; store.set("reg", state.reg); haptic("light"); return daysSheet(); }
+  if (d.nav) {
+    const inDays = ui.sheet === "days", k = inDays ? "daysM" : "calM";
+    ui[k] = Math.max(0, Math.min(inDays ? 2 : 1, ui[k] + Number(d.nav))); ui.calDir = Number(d.nav) > 0 ? "next" : "prev"; haptic("light");
+    return inDays ? daysSheet() : calSheet();
+  }
+  if (d.pc) { state.reg.course = d.pc; store.set("reg", state.reg); haptic("light"); coursePick(); setTimeout(() => { closeSheet(); render(); }, 180); return; }
   if (d.copy) { try { await navigator.clipboard.writeText(d.copy); toast("کپی شد"); } catch (err) { toast(fa(d.copy)); } return; }
   switch (d.act) {
     case "contact":
@@ -588,9 +696,22 @@ document.addEventListener("click", async (e) => {
     case "retest": state.test = { who: "", i: 0, ans: [] }; store.set("test", state.test); return render();
     case "story": return story();
     case "cal": haptic("light"); return calSheet();
-    case "calok": haptic("ok"); closeSheet(); return render();
+    case "calok": case "daysok": haptic("ok"); closeSheet(); return render();
+    case "days": readReg(); haptic("light"); return daysSheet();
+    case "daysclear": state.reg.day = ""; store.set("reg", state.reg); closeSheet(); return render();
+    case "coursepick": readReg(); haptic("light"); return coursePick();
   }
 });
+/* Swipe a calendar to change month (RTL: swipe right = next month). */
+let swipeX = null;
+document.addEventListener("touchstart", (e) => { swipeX = e.target.closest && e.target.closest(".cal") ? e.touches[0].clientX : null; }, { passive: true });
+document.addEventListener("touchend", (e) => {
+  if (swipeX === null) return;
+  const dx = e.changedTouches[0].clientX - swipeX; swipeX = null;
+  if (Math.abs(dx) < 50) return;
+  const b = document.querySelector(`.cal-head [data-nav="${dx > 0 ? 1 : -1}"]`);
+  if (b && !b.disabled) b.click();
+}, { passive: true });
 /* Inside Telegram: follow the user's theme. */
 if (tg) { try { const bg = getComputedStyle(document.documentElement).getPropertyValue("--bg1").trim(); tg.setHeaderColor(bg); tg.setBackgroundColor(bg); } catch (e) {} }
 render();
