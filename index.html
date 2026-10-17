@@ -209,12 +209,9 @@ select.input { appearance: none; -webkit-appearance: none; padding-inline-start:
 .pick:active { transform: scale(0.98); }
 .big { font-size: 26px; font-weight: 900; }
 
-/* test */
+/* progress bar */
 .bar { height: 8px; border-radius: 4px; background: var(--glass); overflow: hidden; }
 .bar > div { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--brand), var(--lilac-d)); transition: width 0.3s ease; }
-.q { font-size: 20px; font-weight: 800; direction: ltr; text-align: left; padding: 22px 18px; }
-.opt { border: 1.5px solid var(--glass-line); background: var(--glass); border-radius: 18px; padding: 14px 16px; font-weight: 800; direction: ltr; text-align: left; width: 100%; transition: transform 0.15s; }
-.opt:active { transform: scale(0.97); }
 
 /* sheet, main button, toast */
 .mainbar { position: fixed; inset: auto 0 0; z-index: 8; padding: 12px max(16px, env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
@@ -227,6 +224,7 @@ select.input { appearance: none; -webkit-appearance: none; padding-inline-start:
 .done { text-align: center; padding: 28px 18px; }
 .done .ok { width: 76px; height: 76px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 12px; background: var(--brand); animation: pop 0.45s cubic-bezier(0.3, 1.6, 0.5, 1); }
 @keyframes pop { from { transform: scale(0.3); } to { transform: scale(1); } }
+.mini button svg { width: 22px; height: 22px; flex-shrink: 0; }
 .ribbon { max-width: 460px; margin: 10px auto 0; text-align: center; font-size: 12px; font-weight: 800; color: var(--lilac-d); }
 @media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
 </style>
@@ -283,6 +281,7 @@ const ICON = {
   sunset: `<svg viewBox="0 0 32 32"><path d="M7 22a9 9 0 0 1 18 0z" fill="#FFB38A"/><path d="M4 22h24M9 26.5h14" stroke="#F08A4B" stroke-width="2.4" stroke-linecap="round"/><path d="M16 5v4M7.5 9.5l2.2 2.2M24.5 9.5l-2.2 2.2" stroke="#FFB224" stroke-width="2.4" stroke-linecap="round"/></svg>`,
   moon: `<svg viewBox="0 0 32 32"><path d="M20 5a11 11 0 1 0 7 19.5A9.5 9.5 0 0 1 20 5z" fill="#9F86FF"/><circle cx="24.5" cy="8.5" r="1.7" fill="#FFC857"/><circle cx="28" cy="14" r="1.1" fill="#FFC857"/></svg>`,
   tick: `<span class="tk"><svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>`,
+  trialI: `<svg viewBox="0 0 64 64"><defs><linearGradient id="gTr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#CDBEFF"/><stop offset="1" stop-color="#7C5CF0"/></linearGradient></defs><rect x="9" y="12" width="46" height="44" rx="11" fill="url(#gTr)"/><rect x="18" y="7" width="5" height="11" rx="2.5" fill="#3E2E86"/><rect x="41" y="7" width="5" height="11" rx="2.5" fill="#3E2E86"/><rect x="15" y="22" width="34" height="28" rx="7" fill="#fff"/><rect x="21" y="32" width="22" height="13" rx="3" fill="#FFC857"/><rect x="30" y="32" width="4" height="13" fill="#7C5CF0"/><path d="M32 32c-3-5-9-3-6 0M32 32c3-5 9-3 6 0" stroke="#7C5CF0" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`,
   chev: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>`,
   cap: `<svg viewBox="0 0 24 24"><path d="M12 4 2 9l10 5 10-5z" fill="currentColor"/><path d="M6 11.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5l-6 3z" fill="currentColor" opacity=".55"/></svg>`,
   talk: `<svg viewBox="0 0 24 24"><path d="M3 10c0-3.6 3.6-6 8-6s8 2.4 8 6-3.6 6-8 6c-1 0-2-.1-2.9-.4L4 17l1.1-3C3.8 13 3 11.6 3 10z" fill="currentColor"/><path d="M20.5 12.5c.3.6.5 1.2.5 1.9 0 1-.4 1.9-1.1 2.6l.6 2.5-2.6-1.2c-.6.1-1.2.2-1.9.2-1.7 0-3.2-.5-4.3-1.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".55"/></svg>`,
@@ -321,40 +320,23 @@ const KB = [
   { q: "قسطی می‌شه؟", a: "دوره‌های بالای ۵ میلیون: ۶۰٪ موقع ثبت‌نام، ۴۰٪ تا جلسه‌ی ششم.", src: "قوانین و مقررات", k: "قسط قسطی اقساط" },
   { q: "انصراف بدم پول برمی‌گرده؟", a: "قبل از جلسه‌ی اول ۹۰٪، تا قبل از جلسه‌ی سوم ۵۰٪، بعدش نه. واریز ظرف ۷ روز کاری.", src: "قوانین و مقررات", k: "انصراف بازگشت برگشت پول لغو" },
   { q: "غیبت و جبرانی؟", a: "حداکثر ۳ غیبت در ترم. برای غیبت خودت جبرانی نیست؛ فقط کلاس‌های لغوشده از طرف آموزشگاه جبران می‌شن.", src: "قوانین و مقررات", k: "غیبت جبرانی تاخیر" },
-  { q: "چه مدارکی لازمه؟", a: "کارت ملی (زیر ۱۸ سال شناسنامه) و یک قطعه عکس. به‌جز Starter، تعیین سطح لازمه.", src: "قوانین و مقررات", k: "مدارک کارت ملی شناسنامه عکس" },
-  { q: "کلاس آزمایشی رایگان دارید؟", a: "بله، برای بزرگسالان بعد از تعیین سطح، یه جلسه رایگان.", src: "سوالات متداول", k: "آزمایشی رایگان" },
+  { q: "چه مدارکی لازمه؟", a: "کارت ملی (زیر ۱۸ سال شناسنامه) و یک قطعه عکس.", src: "قوانین و مقررات", k: "مدارک کارت ملی شناسنامه عکس" },
+  { q: "کلاس آزمایشی رایگان دارید؟", a: "بله! یه جلسه‌ی واقعی رایگان؛ روز و ساعتش رو خودت از «کلاس آزمایشی» انتخاب کن.", src: "سوالات متداول", k: "آزمایشی رایگان" },
   { q: "ترم کی شروع می‌شه؟", a: "ترم پاییز شنبه ۲ آبان؛ مهلت ثبت‌نام تا پنجشنبه ۳۰ مهر.", src: "دوره‌ها و شهریه", k: "شروع ترم مهلت کی" },
   { q: "ساعت کاری دفتر؟", a: "شنبه تا چهارشنبه ۹ تا ۲۰، پنجشنبه ۹ تا ۱۴. نشانی: خیابان نمونه، پلاک ۱۲.", src: "قوانین و مقررات", k: "ساعت کاری آدرس نشانی دفتر" },
   { q: "زیر ۷ سال کلاس دارید؟", a: "فعلاً نه؛ کلاس کودکان از ۷ سالگیه.", src: "سوالات متداول", k: "زیر ۷ خردسال" },
 ];
-const QUIZ = [
-  { q: "My sister ___ a teacher.", o: ["am", "is", "are", "be"], a: 1 },
-  { q: "There ___ two books on the table.", o: ["is", "be", "are", "has"], a: 2 },
-  { q: "She ___ TV when I called her.", o: ["watched", "was watching", "is watching", "watches"], a: 1 },
-  { q: "Have you ever ___ to Shiraz?", o: ["go", "went", "gone", "been"], a: 3 },
-  { q: "If it ___ tomorrow, we'll stay home.", o: ["rains", "will rain", "rained", "raining"], a: 0 },
-  { q: "I'm not used ___ up so early.", o: ["get", "to get", "to getting", "getting"], a: 2 },
-  { q: "She suggested ___ a taxi.", o: ["to take", "taking", "take", "took"], a: 1 },
-  { q: "Had I known, I ___ earlier.", o: ["would leave", "would have left", "will leave", "left"], a: 1 },
-];
-const LEVELS = [
-  { min: 0, name: "Starter", cefr: "A1" }, { min: 2, name: "Elementary", cefr: "A1+" }, { min: 3, name: "Pre-Intermediate", cefr: "A2" },
-  { min: 4, name: "Intermediate", cefr: "B1" }, { min: 6, name: "Upper-Intermediate", cefr: "B2" }, { min: 7, name: "Advanced 1", cefr: "C1" }, { min: 8, name: "Advanced 2", cefr: "C1+" },
-];
-const levelFor = (s) => LEVELS.reduce((l, x) => (s >= x.min ? x : l), LEVELS[0]);
-
 /* ── state + router ── */
 const state = {
   reg: store.get("reg") || { name: "", phone: "", course: "adult", day: "", time: "", mode: "in" },
   calc: { mode: "in", sibling: false, two: false, teen: 1, sessions: 5 },
-  test: store.get("test") || { who: "", i: 0, ans: [] },
   trial: { date: "", time: "" },
   q: "",
 };
 /* Which drawers the user opened, so a re-render does not snap them shut. */
 const ui = { calcOpen: false, calM: 0, daysM: 0, calDir: "", sheet: "" };
 document.addEventListener("toggle", (e) => { const k = e.target.dataset && e.target.dataset.drawer; if (k) ui[k] = e.target.open; }, true);
-const ROUTES = ["home", "courses", "test", "register", "ask", "trial"];
+const ROUTES = ["home", "courses", "trial", "register", "ask"];
 const route = () => { const r = (location.hash || "#home").slice(1); return ROUTES.includes(r) ? r : "home"; };
 const go = (r) => { haptic("light"); location.hash === "#" + r ? render() : (location.hash = r); };
 const onBack = () => (history.length > 1 ? history.back() : go("home"));
@@ -397,11 +379,11 @@ function home() {
       ${dl >= 0 ? `<div style="margin-top:8px"><span class="pill num">${fa(dl)} روز تا پایان ثبت‌نام</span></div>` : ""}</div>${ICON.mascot}</div>
     <div class="tiles">
       <button class="tile t-mint" type="button" data-go="courses">${ICON.book}<b>دوره‌ها</b><span>شهریه و سانس</span></button>
-      <button class="tile t-lilac" type="button" data-go="test">${ICON.target}<b>تعیین سطح</b><span>۲ دقیقه</span></button>
+      <button class="tile t-lilac" type="button" data-go="trial">${ICON.trialI}<b>کلاس آزمایشی</b><span>یه جلسه رایگان</span></button>
       <button class="tile t-peach" type="button" data-go="register">${ICON.pen}<b>ثبت‌نام</b><span>۳۰ ثانیه</span></button>
       <button class="tile t-sky" type="button" data-go="ask">${ICON.chat}<b>بپرس</b><span>جواب فوری</span></button>
     </div>
-    <div class="mini"><button type="button" data-go="trial">${ICON.gift} کلاس آزمایشی رایگان</button></div>`;
+    <div class="mini"><button type="button" data-go="courses">${ICON.cal} ترم پاییز از ${faDate(TERM.start)}</button></div>`;
 }
 /* Eight courses in three drawers, so the page stays short. */
 const GROUPS = [
@@ -456,37 +438,6 @@ function courseSheet(id) {
         </div></details>
       <button class="btn" type="button" data-reg="${c.id}" style="padding:14px">ثبت‌نام همین دوره</button>
     </div>`);
-}
-function testPage() {
-  const t = state.test;
-  if (t.done) return result();
-  if (!t.who) {
-    return `${topBar("تعیین سطح")}<div class="glass" style="padding:16px"><b>۸ سؤال، ۲ دقیقه</b><div class="hint">یه تخمین سریع؛ آزمون اصلی رایگانه و مصاحبه‌ی شفاهی هم داره.</div></div>
-      <div class="tiles"><button class="tile t-peach" type="button" data-who="kid" style="min-height:110px"><b>کودک</b><span>۷ تا ۱۲</span></button>
-      <button class="tile t-lilac" type="button" data-who="teen" style="min-height:110px"><b>نوجوان</b><span>۱۲ تا ۱۷</span></button>
-      <button class="tile t-mint" type="button" data-who="adult" style="grid-column:1/-1;min-height:84px"><b>بزرگسال</b><span>۱۷ سال به بالا</span></button></div>`;
-  }
-  if (t.who === "kid") {
-    return `${topBar("تعیین سطح")}<div class="glass done"><div class="ok">${ICON.check}</div><b style="font-size:18px">دوره‌ی کودکان مناسبه</b><div class="hint">با بازی، داستان و آهنگ · حداکثر ۸ نفر</div>
-      <div class="row" style="margin-top:14px"><button class="btn soft" type="button" data-act="retest" style="flex:1">برگشت</button><button class="btn" type="button" data-reg="kids" style="flex:1">ثبت‌نام</button></div></div>`;
-  }
-  const q = QUIZ[t.i];
-  return `${topBar("تعیین سطح")}<div class="row"><div class="bar" style="flex:1"><div style="width:${(t.i / QUIZ.length) * 100}%"></div></div><span class="hint num">${fa(t.i + 1)}/${fa(QUIZ.length)}</span></div>
-    <div class="glass q" style="margin-top:12px">${esc(q.q)}</div>
-    <div class="stack" style="margin-top:12px">${q.o.map((o, k) => `<button class="opt" type="button" data-ans="${k}">${esc(o)}</button>`).join("")}</div>`;
-}
-function result() {
-  const t = state.test;
-  const teen = t.who === "teen" ? Math.min(20, Math.max(1, Math.round(1 + (t.score * 19) / QUIZ.length))) : 0;
-  const r = 38, C = 2 * Math.PI * r;
-  return `${topBar("نتیجه")}<div class="glass" style="padding:18px;display:flex;gap:16px;align-items:center">
-      <svg width="92" height="92" viewBox="0 0 92 92"><circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--glass-line)" stroke-width="10"/><circle cx="46" cy="46" r="${r}" fill="none" stroke="var(--brand)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${(C * t.score) / QUIZ.length} ${C}" transform="rotate(-90 46 46)"/>
-        <text x="46" y="52" text-anchor="middle" font-size="19" font-weight="900" fill="var(--ink)" font-family="Vazirmatn">${fa(t.score)}/${fa(QUIZ.length)}</text></svg>
-      <div><span class="hint">سطح تو</span><div class="big ltr" style="color:var(--brand)">${esc(teen ? "Teen " + teen : t.level)}</div><span class="pill ltr" style="background:var(--lilac);color:var(--lilac-d)">CEFR ${esc(t.cefr)}</span></div></div>
-    <div class="stack" style="margin-top:12px">
-      <button class="btn" type="button" data-reg="${teen ? "teen" : "adult"}" ${teen ? `data-tl="${teen}"` : ""} style="padding:14px">ثبت‌نام تو همین سطح</button>
-      ${t.who === "adult" ? `<button class="btn soft" type="button" data-go="trial">${ICON.gift} کلاس آزمایشی رایگان</button>` : ""}
-      <div class="row"><button class="btn soft" type="button" data-act="story" style="flex:1">استوری کن</button><button class="btn soft" type="button" data-act="retest" style="flex:1">دوباره</button></div></div>`;
 }
 function register() {
   const r = state.reg;
@@ -588,7 +539,7 @@ function coursePick() {
 }
 function trial() {
   const t = state.trial;
-  return `${topBar("کلاس آزمایشی")}<div class="glass stack" style="padding:16px"><b>یه جلسه‌ی واقعی، رایگان 🎁</b><span class="hint">برای بزرگسالان، بعد از تعیین سطح</span>
+  return `${topBar("کلاس آزمایشی")}<div class="glass stack" style="padding:16px"><b>یه جلسه‌ی واقعی، رایگان 🎁</b><span class="hint">روز و ساعتش رو خودت انتخاب کن؛ بعدش هر وقت خواستی ثبت‌نام کن</span>
     <div><span class="label">روز</span><button class="input datebtn" type="button" data-act="cal"><span class="ic">${ICON.cal}</span>
       <span class="v">${t.date ? `<span>${faDate(new Date(t.date + "T12:00:00"))}</span><small>${fa(seats(new Date(t.date + "T12:00:00")))} جای خالی</small>` : `<span class="ph">انتخاب از تقویم</span><small>از فردا تا ۳۰ روز آینده</small>`}</span><span class="chev">${ICON.chev}</span></button></div>
     <div><span class="label">ساعت</span>${timeCards(t.time, "tt")}</div>
@@ -603,7 +554,7 @@ function search(q) {
 /* ── render + actions ── */
 function render() {
   const r = route();
-  $("#app").innerHTML = { home, courses, test: testPage, register, ask, trial }[r]();
+  $("#app").innerHTML = { home, courses, register, ask, trial }[r]();
   setMain("", null);
   if (r === "register") setMain("ثبت‌نام", submitReg);
   if (r === "trial") setMain("رزرو کلاس آزمایشی", submitTrial);
@@ -634,26 +585,6 @@ function submitTrial() {
   if (CAN_SEND) { try { tg.sendData(JSON.stringify({ type: "trial", ...t, name: state.reg.name, phone: digits(state.reg.phone) })); return; } catch (e) {} }
   done("رزرو شد!", `${faDate(new Date(t.date + "T12:00:00"))} · ${TIMES.find((x) => x.id === t.time).label}<br>یه روز قبلش یادآوری می‌کنیم.`);
 }
-async function story() {
-  const t = state.test;
-  const cv = document.createElement("canvas"); cv.width = 540; cv.height = 960; const g = cv.getContext("2d");
-  try { await document.fonts.load("900 60px Vazirmatn"); } catch (e) {}
-  const grd = g.createLinearGradient(0, 0, 540, 960); grd.addColorStop(0, "#D6E9FF"); grd.addColorStop(0.5, "#E4DBFF"); grd.addColorStop(1, "#D2F4EC");
-  g.fillStyle = grd; g.fillRect(0, 0, 540, 960);
-  g.fillStyle = "rgba(255,255,255,0.6)"; g.beginPath();
-  if (g.roundRect) g.roundRect(50, 250, 440, 440, 48); else g.rect(50, 250, 440, 440);
-  g.fill();
-  g.textAlign = "center"; g.fillStyle = "#1E2233";
-  g.direction = "rtl"; g.font = "800 32px Vazirmatn"; g.fillText("سطح زبان من", 270, 340);
-  g.direction = "ltr"; g.font = "900 62px Vazirmatn"; g.fillStyle = "#6A4FD0"; g.fillText(t.level || "Intermediate", 270, 440);
-  g.fillStyle = "#2F6FC4"; g.font = "800 30px Vazirmatn"; g.fillText("CEFR " + (t.cefr || "B1"), 270, 495);
-  g.direction = "rtl"; g.fillStyle = "#1E2233"; g.font = "900 36px Vazirmatn"; g.fillText("آموزشگاه زبان شما", 270, 620);
-  g.font = "700 26px Vazirmatn"; g.fillStyle = "#6C7088"; g.fillText("تو هم سطحت رو بسنج", 270, 820);
-  sheet(`<b style="font-size:17px">استوری تو</b><div class="hint">داخل تلگرام با یه لمس تو استوری‌ت می‌ره، با لینک اپ.</div>
-    <img src="${cv.toDataURL("image/png")}" alt="کارت استوری سطح زبان" style="display:block;width:58%;margin:14px auto;border-radius:20px;box-shadow:var(--shadow)">
-    <button class="btn" type="button" data-act="close" style="width:100%">باشه</button>`);
-}
-
 document.addEventListener("click", async (e) => {
   const el = e.target.closest("button"); if (!el) return;
   const d = el.dataset;
@@ -670,12 +601,6 @@ document.addEventListener("click", async (e) => {
   /* Day and time are optional: tapping the picked card again clears it. */
   if (d.time) { readReg(); state.reg.time = state.reg.time === d.time ? "" : d.time; store.set("reg", state.reg); haptic("light"); return render(); }
   if (d.tt) { state.trial.time = d.tt; haptic("light"); return render(); }
-  if (d.who) { state.test = { who: d.who, i: 0, ans: [] }; store.set("test", state.test); haptic("light"); return render(); }
-  if (d.ans !== undefined) {
-    const t = state.test; t.ans[t.i] = Number(d.ans); t.i += 1; haptic("light");
-    if (t.i >= QUIZ.length) { t.score = QUIZ.reduce((s, q, i) => s + (t.ans[i] === q.a ? 1 : 0), 0); const l = levelFor(t.score); t.level = l.name; t.cefr = l.cefr; t.done = true; haptic("ok"); }
-    store.set("test", t); return render();
-  }
   if (d.q) { state.q = d.q; return render(); }
   if (d.cday) { state.trial.date = d.cday; haptic("light"); return calSheet(); }
   if (d.pday) { const w = Number(d.pday); state.reg.day = DAYS.find((x) => x.on.includes(w)).id; store.set("reg", state.reg); haptic("light"); return daysSheet(); }
@@ -693,8 +618,6 @@ document.addEventListener("click", async (e) => {
       else { $("#ph").value = "09123456789"; toast("داخل تلگرام شماره‌ی خودت با یه لمس میاد (نمونه پر شد)."); }
       return;
     case "homescreen": if (IN_TG && tg.addToHomeScreen) tg.addToHomeScreen(); else toast("داخل تلگرام، آیکون آموزشگاه روی صفحه‌ی گوشی میاد."); return;
-    case "retest": state.test = { who: "", i: 0, ans: [] }; store.set("test", state.test); return render();
-    case "story": return story();
     case "cal": haptic("light"); return calSheet();
     case "calok": case "daysok": haptic("ok"); closeSheet(); return render();
     case "days": readReg(); haptic("light"); return daysSheet();
